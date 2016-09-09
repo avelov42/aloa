@@ -33,7 +33,7 @@ public class Aloa extends Game
         instance = this;
         assets = new Assets();
         fade = new ScreenFade();
-        //setScreen(MenuScreen.getInstance());
+        setScreen(CreditsScreen.getInstance());
     }
 
     @Override
