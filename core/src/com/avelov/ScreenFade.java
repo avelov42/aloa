@@ -12,8 +12,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class ScreenFade
 {
-    public static final long FADE_OUT_DURATION = 400;
-    public static final long FADE_IN_DURATION = 400;
+    public static final long FADE_OUT_DURATION = 1000;
+    public static final long FADE_IN_DURATION = 1000;
 
     public enum Mode
     {

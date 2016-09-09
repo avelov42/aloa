@@ -1,10 +1,16 @@
 package com.avelov;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+/* General list
+@todo Choose production font and scale it properly (let it replace loaded font in skin)
+@todo Try to use other skins than shade
+ */
 
 /**
  * Aloa main class performs few basic tasks:
@@ -13,7 +19,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  * 2) Handles changing screens and transitions between them
  * 3) Delegates render, pause, resume, dispose to existing screens (current and next screen)
  */
-public class Aloa extends Game
+public class Aloa extends ApplicationAdapter
 {
     static public Aloa instance;
     static public Assets assets;
@@ -36,7 +42,6 @@ public class Aloa extends Game
         setScreen(CreditsScreen.getInstance());
     }
 
-    @Override
     public void setScreen(Screen screen)
     {
         if(nextScreen != null)
@@ -54,17 +59,31 @@ public class Aloa extends Game
         }
     }
 
+    public Screen getScreen()
+    {
+        return currentScreen;
+    }
+
     @Override
     public void render()
     {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        currentScreen.render(Gdx.graphics.getDeltaTime());
+
+        if(Gdx.input.justTouched())
+        {
+            if(getScreen() == CreditsScreen.getInstance())
+                setScreen(CreditsScreen2.getInstance());
+            if(getScreen() == CreditsScreen2.getInstance())
+                setScreen(CreditsScreen.getInstance());
+        }
+
+
         assets.shape.begin(ShapeRenderer.ShapeType.Filled);
         handleTransition();
         assets.shape.end();
-
-        currentScreen.render(Gdx.graphics.getDeltaTime());
     }
 
     private void handleTransition()
@@ -110,7 +129,7 @@ public class Aloa extends Game
     public void dispose()
     {
         assets.dispose();
-        if(currentScreen != null) currentScreen.resume();
-        if(nextScreen != null) nextScreen.resume();
+        if(currentScreen != null) currentScreen.dispose();
+        if(nextScreen != null) nextScreen.dispose();
     }
 }
