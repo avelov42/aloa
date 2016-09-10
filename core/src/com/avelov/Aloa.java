@@ -1,5 +1,6 @@
 package com.avelov;
 
+import com.avelov.screens.MenuScreen;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -37,7 +38,7 @@ public class Aloa extends ApplicationAdapter
         instance = this;
         assets = new Assets();
         fade = new ScreenFade();
-        setScreen(CreditsScreen.getInstance());
+        setScreen(MenuScreen.getInstance());
     }
 
     public void setScreen(Screen screen)
