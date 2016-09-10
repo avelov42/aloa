@@ -28,13 +28,15 @@ public class FileManager
         }
     };
 
-    public static Collection<AutomatonDescription> getPredefinedAutomata() {
+    public static ArrayList<AutomatonDescription> getPredefinedAutomata() {
         ArrayList<AutomatonDescription> ret = new ArrayList<>();
         FileHandle[] fhs;
         if (Gdx.app.getType() == Application.ApplicationType.Desktop)
             fhs = Gdx.files.internal(Gdx.files.getLocalStoragePath() + "predefs/automaton/").list();
-        else
+        else if(Gdx.app.getType() == Application.ApplicationType.Android)
             fhs = Gdx.files.internal("predefs/automaton/").list();
+        else
+            throw new UnsupportedOperationException();
 
         Arrays.sort(fhs, byDateComparator);
         for (FileHandle fh : fhs) {
@@ -44,7 +46,7 @@ public class FileManager
         return ret;
     }
 
-    public static Collection<AutomatonDescription> getSavedAutomata()
+    public static ArrayList<AutomatonDescription> getSavedAutomata()
     {
         ArrayList<AutomatonDescription> ret = new ArrayList<>();
         FileHandle[] fhs;

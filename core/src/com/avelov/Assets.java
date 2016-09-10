@@ -21,7 +21,6 @@ public class Assets implements Disposable
     public SpriteBatch batch;
     public ShapeRenderer shape;
     public EmptyInputProcessor ignoreInput;
-    public Texture titleBar;
     public Skin skin;
     public String aloaAbout = getAloaAbout();
 
@@ -30,15 +29,14 @@ public class Assets implements Disposable
     {
         batch.dispose();
         shape.dispose();
-        titleBar.dispose();
         skin.dispose();
     }
 
 
     public ImageButton makeButton(String name)
     {
-        Drawable tinted = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/" + name + ".png")))).tint(new Color(0.2f, 1f, 0.2f, 1f));
-        return new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/" + name + ".png")))), tinted);
+        Drawable tinted = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/icons/" + name + ".png")))).tint(new Color(0.2f, 1f, 0.2f, 1f));
+        return new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/icons/" + name + ".png")))), tinted);
     }
 
 
@@ -46,7 +44,7 @@ public class Assets implements Disposable
     {
         /** SKIN & FONT **/
         skin = new Skin();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Roboto-Black.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("skin/fonts/Roboto-Black.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         float size = (float) Math.sqrt(Gdx.graphics.getWidth() * Gdx.graphics.getHeight()) * 0.04f;
@@ -74,19 +72,17 @@ public class Assets implements Disposable
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
         ignoreInput = new EmptyInputProcessor();
-        titleBar = new Texture(Gdx.files.internal("aloa.png"));
-
     }
 
     private String getAloaAbout()
     {
-        return "Welcome in a Lot of Automata!\n" +
-                "Cellular automata are very interesting topic in mathematics and science.\n" +
-                "From astounding game of life, through its modifications to undoubtedly " +
-                "practical heat transfer automaton.\n" +
-                "All of them and many more can be found in this sandbox application.\n" +
-                "Explore them, discover their behaviours, create new structures inside them.\n" +
-                "Don't forget to show this awesome app to your friends! Have fun!\n";
+        return "Welcome in a Lot of Automata!\n\n" +
+                "Cellular automata are very interesting topic in mathematics and science.\n\n" +
+                "There is a lot of automata - from astounding game of life, through its modifications to undoubtedly " +
+                "practical heat transfer automaton.\n\n" +
+                "All of them and many more can be found in this sandbox application.\n\n" +
+                "Explore them, discover their behaviours, create new structures inside them.\n\n" +
+                "Don't forget to show this awesome app to your friends! Have fun!\n\n";
     }
 }
 

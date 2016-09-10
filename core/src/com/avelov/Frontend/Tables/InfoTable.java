@@ -16,7 +16,7 @@ public class InfoTable extends DynamicTable
     {
         Label infoLabel = new Label(text, Aloa.assets.skin);
         infoLabel.setWrap(true);
-        infoLabel.setAlignment(Align.top);
+        infoLabel.setAlignment(Align.topLeft);
 
         Table labelTable = new Table();
         labelTable.add(infoLabel).expand().fill().pad(uy(20), ux(20), uy(20), ux(20));

@@ -3,6 +3,7 @@ package com.avelov.Frontend.Tables;
 
 import com.avelov.Aloa;
 import com.avelov.Center.Files.AutomatonDescription;
+import com.avelov.Center.Files.FileManager;
 import com.avelov.Frontend.Screens.MenuScreen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -25,19 +26,21 @@ public class AutomatonChoiceTable extends DynamicTable
     @Override
     public void refresh()
     {
-        ArrayList<AutomatonDescription> fetchedList = new ArrayList<>();
+        ArrayList<AutomatonDescription> fetchedList;
         switch(mode)
         {
             case New:
-                fetchedList.add(new AutomatonDescription("Some fresh automata", ""));
-                fetchedList.add(new AutomatonDescription("Are listed here", ""));
+                fetchedList = FileManager.getPredefinedAutomata();
                 break;
             case Load:
-                fetchedList.add(new AutomatonDescription("Some saved automata", ""));
-                fetchedList.add(new AutomatonDescription("Save the queen!", ""));
+                fetchedList = FileManager.getSavedAutomata();
+                break;
+            default:
+                fetchedList = new ArrayList<>(); //just calming down the AS
                 break;
         }
         graphicalAutomataList.clearItems();
+        //@todo Write nice handling of case when list is empty (non-clickable "The list is empty..")
         graphicalAutomataList.setItems(fetchedList.toArray(new AutomatonDescription[fetchedList.size()]));
     }
 
