@@ -1,4 +1,5 @@
-package com.avelov;
+package com.avelov.screens;
+import com.avelov.Aloa;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -24,8 +25,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
  */
 public class ScreenFade
 {
-    public static final long FADE_OUT_DURATION = 2000;
-    public static final long FADE_IN_DURATION = 2000;
+    public static final long FADE_OUT_DURATION = 404;
+    public static final long FADE_IN_DURATION = 404;
 
     public enum State
     {

@@ -33,7 +33,9 @@ public class MenuScreen implements Screen
         tableStack.push(table);
         stage.clear();
         stage.addActor(tableStack.peek());
-        table.setFillParent(true);
+        //table.setFillParent(true);
+        table.setSize(ux(900), uy(750));
+        table.setPosition(ux(50), (uy(40)));
     }
 
     public void popTable()

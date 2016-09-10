@@ -80,7 +80,7 @@ public class AutomatonChoiceTable extends DynamicTable
                         break;
                     case Load:
                         //todo add code which starts GameScreen
-                        throw new UnsupportedOperationException();
+                        break;
 
                 }
             }

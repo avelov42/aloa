@@ -50,7 +50,7 @@ public class MenuTable extends DynamicTable
         });
 
         float top = uy(0), left = ux(80), bottom = uy(42), right = ux(80);
-        add(newSimulationButton).expand().fill().space(top, left, bottom, right).padTop(uy(100)).row();
+        add(newSimulationButton).expand().fill().space(top, left, bottom, right).row();
         add(savedSimulationsButton).expand().fill().space(top, left, bottom, right).row();
         add(infoButton).expand().fill().space(top, left, bottom, right).row();
         add(exitButton).expand().fill().space(top, left, bottom, right).row();
