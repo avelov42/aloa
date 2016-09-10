@@ -44,24 +44,19 @@ public class Aloa extends ApplicationAdapter
 
     public void setScreen(Screen screen)
     {
-        if(nextScreen != null)
-            return; //prevent from interfering screen change
+        if(fade.getState() != ScreenFade.State.Idle)
+            return;
         if(currentScreen != null) //typical change
         {
             nextScreen = screen;
             currentScreen.hide(); // lets tell the screen to unregister its input processor
-            fade.start(ScreenFade.Mode.FadeOut, ScreenFade.FADE_OUT_DURATION); //setting fade-out
+            fade.start(ScreenFade.State.FadeOut, ScreenFade.FADE_OUT_DURATION); //setting fade-out
         }
         else //occurs only on start of application
         {
             currentScreen = screen;
-            fade.start(ScreenFade.Mode.FadeIn, ScreenFade.FADE_OUT_DURATION); //setting fade-in
+            fade.start(ScreenFade.State.FadeIn, ScreenFade.FADE_OUT_DURATION); //setting fade-in
         }
-    }
-
-    public Screen getScreen()
-    {
-        return currentScreen;
     }
 
     @Override
@@ -74,33 +69,28 @@ public class Aloa extends ApplicationAdapter
 
         if(Gdx.input.justTouched())
         {
-            if(getScreen() == CreditsScreen.getInstance())
+            if(currentScreen == CreditsScreen.getInstance())
                 setScreen(CreditsScreen2.getInstance());
-            if(getScreen() == CreditsScreen2.getInstance())
+            if(currentScreen == CreditsScreen2.getInstance())
                 setScreen(CreditsScreen.getInstance());
         }
 
+        assert currentScreen != null: "No current screen assigned";
 
-        assets.shape.begin(ShapeRenderer.ShapeType.Filled);
-        handleTransition();
-        assets.shape.end();
-    }
-
-    private void handleTransition()
-    {
-        assert currentScreen != null;
         fade.render();
-        ScreenFade.Mode justFinishedState = fade.getJustFinishedState();
-        if(fade.done() && justFinishedState == ScreenFade.Mode.FadeOut) //old screen faded out (4)
-        {
-            currentScreen.dispose();
-            currentScreen = nextScreen;
-            nextScreen = null;
-            fade.start(ScreenFade.Mode.FadeIn, ScreenFade.FADE_IN_DURATION); //lets fade in new screen
-        }
-        if(fade.done() && justFinishedState == ScreenFade.Mode.FadeIn) //new screen faded
+
+        if(fade.getState() == ScreenFade.State.AfterFadeIn) //new screen faded
         {
             currentScreen.show();
+            fade.stop();
+        }
+
+        if(fade.getState() == ScreenFade.State.AfterFadeOut) //old screen faded out (4)
+        {
+            currentScreen = nextScreen;
+            nextScreen = null;
+            fade.stop();
+            fade.start(ScreenFade.State.FadeIn, ScreenFade.FADE_IN_DURATION); //lets fade in new screen
         }
     }
 
@@ -129,7 +119,6 @@ public class Aloa extends ApplicationAdapter
     public void dispose()
     {
         assets.dispose();
-        if(currentScreen != null) currentScreen.dispose();
-        if(nextScreen != null) nextScreen.dispose();
+        //@todo dispose all screen singletons (or move it to assets)
     }
 }

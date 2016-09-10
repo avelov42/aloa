@@ -36,7 +36,7 @@ public class CreditsScreen implements Screen
     @Override
     public void render(float delta)
     {
-        Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
+        Gdx.gl.glClearColor(0.2f, 0.2f, 1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
@@ -47,7 +47,7 @@ public class CreditsScreen implements Screen
     @Override
     public void show()
     {
-
+        System.out.println("Credits 1 show()");
     }
 
     @Override
@@ -71,7 +71,7 @@ public class CreditsScreen implements Screen
     @Override
     public void hide()
     {
-
+        System.out.println("Credits 1 hide()");
     }
 }
 

@@ -9,20 +9,33 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Class that is rendering a alpha black rectangle.
  * It is both capable of rendering fade in and fade out.
+ *
+ * After construction, ScreenFade is in state Idle.
+ * It is the only state that allows you to start fader.
+ * While starting two states can be used as an argument:
+ * State.FadeIn and State.FadeOut.
+ *
+ * When transition is done, ScreenFade will be in state
+ * State.AfterFadeIn or State.AfterFadeOut, accordingly
+ * to start state.
+ *
+ * You should call stop() before calling start(), because
+ * it re-establishes State.Idle state.
  */
 public class ScreenFade
 {
-    public static final long FADE_OUT_DURATION = 1000;
-    public static final long FADE_IN_DURATION = 1000;
+    public static final long FADE_OUT_DURATION = 2000;
+    public static final long FADE_IN_DURATION = 2000;
 
-    public enum Mode
+    public enum State
     {
         FadeIn,
         FadeOut,
-        Done
+        AfterFadeIn,
+        AfterFadeOut,
+        Idle
     }
-    private Mode mode;
-    private Mode prevMode;
+    private State state;
     private long startTimestamp;
     private long duration;
     private ShapeRenderer shape;
@@ -30,56 +43,59 @@ public class ScreenFade
 
     public ScreenFade()
     {
-        mode = Mode.Done;
         shape = Aloa.assets.shape;
         viewport = new ScreenViewport();
+        state = State.Idle;
     }
 
-    public void start(Mode mode, long duration)
+    public void start(State state, long duration)
     {
-        startTimestamp = TimeUtils.millis();
-        prevMode = this.mode;
-        this.mode = mode;
-        this.duration = duration;
+        if(this.state == State.Idle && (state == State.FadeIn || state == State.FadeOut))
+        {
+            this.startTimestamp = TimeUtils.millis();
+            this.state = state;
+            this.duration = duration;
+        }
+        else if(state != State.FadeIn && state != State.FadeOut)
+            throw new IllegalStateException("Cannot set ScreenFade to state " + state.toString());
+        else
+            throw new IllegalStateException("Cannot start working ScreenFade");
     }
 
-    public boolean done()
+    public void stop()
     {
-        return mode == Mode.Done;
+        this.state = State.Idle;
     }
 
-    public Mode getJustFinishedState()
+    public State getState()
     {
-        Mode rv = prevMode;
-        prevMode = Mode.Done;
-        return rv;
+        return state;
     }
 
     public void render()
     {
-        if(mode != Mode.Done)
+        if(state != State.Idle)
         {
-            //initializing alpha to random value cuz AS says it may be uninitialized, somehow.
             float alpha = 0.42f; //calming down android studio
             float advance = (float) (TimeUtils.millis() - startTimestamp) / duration;
-            if(mode == Mode.FadeOut) alpha = advance;
-            if(mode == Mode.FadeIn) alpha = 1 - advance;
-            if(advance >= 1)
+            if(advance >= 1) advance = 1f;
+            if(state == State.FadeOut) alpha = advance;
+            if(state == State.FadeIn) alpha = 1 - advance;
+            if(advance == 1f) //previously set to 1f
             {
-                prevMode = mode;
-                mode = Mode.Done;
+                if(state == State.FadeIn) state = State.AfterFadeIn;
+                if(state == State.FadeOut) state = State.AfterFadeOut;
             }
-
             //draw
             Gdx.gl20.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            //shape.begin(ShapeRenderer.ShapeType.Filled); //called in aloa
+            shape.begin(ShapeRenderer.ShapeType.Filled); //called in aloa
             viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             viewport.apply(true);
             shape.setProjectionMatrix(viewport.getCamera().combined);
             shape.setColor(0f, 0f, 0f, alpha);
             shape.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            //shape.end();
+            shape.end();
         }
     }
 }
