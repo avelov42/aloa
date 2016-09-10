@@ -1,6 +1,7 @@
 package com.avelov;
 
-import com.avelov.screens.*;
+import com.avelov.Frontend.Screens.MenuScreen;
+import com.avelov.Frontend.Screens.ScreenFade;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -25,7 +26,7 @@ public class Aloa extends ApplicationAdapter
     static public OrientationManager orientationManager;
     private Screen currentScreen;
     private Screen nextScreen;
-    private com.avelov.screens.ScreenFade fade;
+    private ScreenFade fade;
 
     public Aloa(OrientationManager orientationManager)
     {
@@ -37,24 +38,24 @@ public class Aloa extends ApplicationAdapter
     {
         instance = this;
         assets = new Assets();
-        fade = new com.avelov.screens.ScreenFade();
+        fade = new ScreenFade();
         setScreen(MenuScreen.getInstance());
     }
 
     public void setScreen(Screen screen)
     {
-        if(fade.getState() != com.avelov.screens.ScreenFade.State.Idle)
+        if(fade.getState() != ScreenFade.State.Idle)
             return;
         if(currentScreen != null) //typical change
         {
             nextScreen = screen;
             currentScreen.hide(); // lets tell the screen to unregister its input processor
-            fade.start(com.avelov.screens.ScreenFade.State.FadeOut, com.avelov.screens.ScreenFade.FADE_OUT_DURATION); //setting fade-out
+            fade.start(ScreenFade.State.FadeOut, ScreenFade.FADE_OUT_DURATION); //setting fade-out
         }
         else //occurs only on start of application
         {
             currentScreen = screen;
-            fade.start(com.avelov.screens.ScreenFade.State.FadeIn, com.avelov.screens.ScreenFade.FADE_OUT_DURATION); //setting fade-in
+            fade.start(ScreenFade.State.FadeIn, ScreenFade.FADE_OUT_DURATION); //setting fade-in
         }
     }
 
@@ -70,18 +71,18 @@ public class Aloa extends ApplicationAdapter
 
         fade.render();
 
-        if(fade.getState() == com.avelov.screens.ScreenFade.State.AfterFadeIn) //new screen faded
+        if(fade.getState() == ScreenFade.State.AfterFadeIn) //new screen faded
         {
             currentScreen.show();
             fade.stop();
         }
 
-        if(fade.getState() == com.avelov.screens.ScreenFade.State.AfterFadeOut) //old screen faded out (4)
+        if(fade.getState() == ScreenFade.State.AfterFadeOut) //old screen faded out (4)
         {
             currentScreen = nextScreen;
             nextScreen = null;
             fade.stop();
-            fade.start(com.avelov.screens.ScreenFade.State.FadeIn, com.avelov.screens.ScreenFade.FADE_IN_DURATION); //lets fade in new screen
+            fade.start(ScreenFade.State.FadeIn, ScreenFade.FADE_IN_DURATION); //lets fade in new screen
         }
     }
 
