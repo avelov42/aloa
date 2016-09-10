@@ -65,14 +65,6 @@ public class Aloa extends ApplicationAdapter
 
         currentScreen.render(Gdx.graphics.getDeltaTime());
 
-        if(Gdx.input.justTouched())
-        {
-            if(currentScreen == CreditsScreen.getInstance())
-                setScreen(CreditsScreen2.getInstance());
-            if(currentScreen == CreditsScreen2.getInstance())
-                setScreen(CreditsScreen.getInstance());
-        }
-
         assert currentScreen != null: "No current screen assigned";
 
         fade.render();

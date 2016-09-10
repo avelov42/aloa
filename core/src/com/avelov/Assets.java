@@ -23,6 +23,7 @@ public class Assets implements Disposable
     public EmptyInputProcessor ignoreInput;
     public Texture titleBar;
     public Skin skin;
+    public String aloaAbout = getAloaAbout();
 
     @Override
     public void dispose()
@@ -39,7 +40,6 @@ public class Assets implements Disposable
         Drawable tinted = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/" + name + ".png")))).tint(new Color(0.2f, 1f, 0.2f, 1f));
         return new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("icons/" + name + ".png")))), tinted);
     }
-
 
 
     public Assets()
@@ -76,6 +76,17 @@ public class Assets implements Disposable
         ignoreInput = new EmptyInputProcessor();
         titleBar = new Texture(Gdx.files.internal("aloa.png"));
 
+    }
+
+    private String getAloaAbout()
+    {
+        return "Welcome in a Lot of Automata!\n" +
+                "Cellular automata are very interesting topic in mathematics and science.\n" +
+                "From astounding game of life, through its modifications to undoubtedly " +
+                "practical heat transfer automaton.\n" +
+                "All of them and many more can be found in this sandbox application.\n" +
+                "Explore them, discover their behaviours, create new structures inside them.\n" +
+                "Don't forget to show this awesome app to your friends! Have fun!\n";
     }
 }
 
