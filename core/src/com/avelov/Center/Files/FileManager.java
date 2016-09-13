@@ -31,12 +31,7 @@ public class FileManager
     public static ArrayList<AutomatonDescription> getPredefinedAutomata() {
         ArrayList<AutomatonDescription> ret = new ArrayList<>();
         FileHandle[] fhs;
-        if (Gdx.app.getType() == Application.ApplicationType.Desktop)
-            fhs = Gdx.files.internal(Gdx.files.getLocalStoragePath() + "predefs/automaton/").list();
-        else if(Gdx.app.getType() == Application.ApplicationType.Android)
-            fhs = Gdx.files.internal("predefs/automaton/").list();
-        else
-            throw new UnsupportedOperationException();
+        fhs = Gdx.files.internal("predefs/automaton/").list();
 
         Arrays.sort(fhs, byDateComparator);
         for (FileHandle fh : fhs) {
@@ -50,7 +45,7 @@ public class FileManager
     {
         ArrayList<AutomatonDescription> ret = new ArrayList<>();
         FileHandle[] fhs;
-        fhs = Gdx.files.internal(".aloa/automaton/").list();
+        fhs = Gdx.files.local("automaton/").list();
         Arrays.sort(fhs, byDateComparator);
         for (FileHandle fh : fhs) {
             if (fh.extension().equals("automaton"))
@@ -73,7 +68,7 @@ public class FileManager
 
     public static void SaveAutomaton(BoardHandler bh, String fileName) {
         System.out.println("saving with name: " + fileName);
-        FileHandle fh = Gdx.files.local(".aloa/automaton/" + fileName + ".automaton");
+        FileHandle fh = Gdx.files.local("automaton/" + fileName + ".automaton");
         fh.writeString("", false);
         bh.save(fh);
     }
