@@ -61,34 +61,4 @@ public class HexCenterTopology implements CenterTopology {
     public Board CreateAutomaton(int size, int floats, BoundaryPolicy boundaryPolicy, Map<Coordinates, ? extends Cell> values) {
         return new HexBoard(size, floats, boundaryPolicy, values);
     }
-
-    static public class TestBoardHandler {
-        static public void main(String[] s) {
-            testgetCoordinatesHex();
-        }
-
-        static public void testgetCoordinatesHex() {
-            HexCenterTopology t = new HexCenterTopology();
-            Coordinates c;
-            c = t.getCoordinates(new Vector3(1.5f, 2.5f * (float) Math.sqrt(3.0), 0.0f));
-            assert c.x == 1;
-            assert c.y == 2;
-
-            c = t.getCoordinates(new Vector3(3.0f, 2.0f * (float) Math.sqrt(3.0), 0.0f));
-            assert c.x == 2;
-            assert c.y == 1;
-
-            c = t.getCoordinates(new Vector3(4.5f, 1.5f * (float) Math.sqrt(3.0), 0.0f));
-            assert c.x == 3;
-            assert c.y == 0;
-
-            c = t.getCoordinates(new Vector3(0.25f, 0.25f * (float) Math.sqrt(3.0), 0.0f));
-            assert c.x == 0;
-            assert c.y == 0;
-
-            c = t.getCoordinates(new Vector3(2.25f, 1.25f * (float) Math.sqrt(3.0), 0.0f));
-            assert c.x == 1;
-            assert c.y == 0;
-        }
-    }
 }
