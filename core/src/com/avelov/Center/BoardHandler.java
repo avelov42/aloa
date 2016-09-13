@@ -53,7 +53,7 @@ public class BoardHandler implements ISavable {
     }
 
     public void makeStep() {
-        script.Run(handled);
+        script.run(handled);
     }
 
     public long getStepsCount() {

@@ -76,7 +76,7 @@ public class ScriptSetReferenceCellCommand implements ScriptCommand {
     }
 
     @Override
-    public boolean Run(Cell thisCell, Variables variables, Board board) {
+    public boolean run(Cell thisCell, Variables variables, Board board) {
         cs.Set(thisCell, variables, board);
         return true;
     }

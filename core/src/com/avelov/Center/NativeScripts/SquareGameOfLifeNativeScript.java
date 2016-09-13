@@ -17,7 +17,7 @@ public class SquareGameOfLifeNativeScript extends Script {
     static private float[] deadCell = new float[] {0};
 
     @Override
-    public void Run(Board board) {
+    public void run(Board board) {
         Iterator<Cell> iter = board.getUpdateIter();
         while(iter.hasNext())
         {

@@ -13,10 +13,10 @@ public class ScriptBlock implements ScriptCommand{
     private int commandsCount = 0;
 
     @Override
-    public boolean Run(Cell thisCell, Variables variables, Board board) {
+    public boolean run(Cell thisCell, Variables variables, Board board) {
         for(int i = 0; i < commandsCount; i++)
         {
-            if(!commands.get(i).Run(thisCell, variables, board))
+            if(!commands.get(i).run(thisCell, variables, board))
                 return false;
         }
         return true;

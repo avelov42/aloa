@@ -19,12 +19,12 @@ public class ScriptIfElseCommand implements ScriptCommand
         this.blockElse = blockElse;
     }
 
-    public boolean Run(Cell thisCell, Variables variables, Board board)
+    public boolean run(Cell thisCell, Variables variables, Board board)
     {
         if(predicate.ValueFloat(thisCell, variables, board) != 0)
-            return blockIf.Run(thisCell, variables, board);
+            return blockIf.run(thisCell, variables, board);
         else
-            return blockElse.Run(thisCell, variables, board);
+            return blockElse.run(thisCell, variables, board);
     }
 
 }

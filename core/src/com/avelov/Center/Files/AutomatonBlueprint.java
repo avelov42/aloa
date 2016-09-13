@@ -221,6 +221,7 @@ public final class AutomatonBlueprint implements ISavable {
         return ret;
     }
 
+    //@todo jak ryba dostanie raka to pokazać lekarzowi.
     public class TinterDetails {
         public Tinter tinter;
         public String name;

@@ -19,13 +19,13 @@ public class Script {
         this.command = command;
     }
 
-    public void Run(Board board)
+    public void run(Board board)
     {
         Iterator<Cell> iter = board.getUpdateIter();
         while(iter.hasNext())
         {
             Cell c = iter.next();
-            command.Run(c, variables, board);
+            command.run(c, variables, board);
             variables.ResetLocals();
         }
         board.nextIteration();

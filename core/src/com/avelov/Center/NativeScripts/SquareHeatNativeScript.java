@@ -11,7 +11,7 @@ import com.avelov.Backend.Cell.Cell;
  */
 public class SquareHeatNativeScript extends Script {
     @Override
-    public void Run(Board board) {
+    public void run(Board board) {
         Iterator<Cell> iter = board.getUpdateIter();
         while (iter.hasNext()) {
             Cell currCell = iter.next();

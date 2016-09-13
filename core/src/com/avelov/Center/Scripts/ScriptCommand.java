@@ -7,5 +7,5 @@ import com.avelov.Backend.Cell.Cell;
  * Created by mateusz on 15.07.16.
  */
 public interface ScriptCommand {
-    boolean Run(Cell thisCell, Variables variables, Board board);
+    boolean run(Cell thisCell, Variables variables, Board board);
 }

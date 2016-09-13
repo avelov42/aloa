@@ -17,10 +17,10 @@ public class ScriptIfCommand implements ScriptCommand
         this.block = block;
     }
 
-    public boolean Run(Cell thisCell, Variables variables, Board board)
+    public boolean run(Cell thisCell, Variables variables, Board board)
     {
         if(predicate.ValueFloat(thisCell, variables, board) != 0)
-            return block.Run(thisCell, variables, board);
+            return block.run(thisCell, variables, board);
         return true;
     }
 }
