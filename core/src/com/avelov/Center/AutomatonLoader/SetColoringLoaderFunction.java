@@ -6,7 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 
 import java.io.BufferedReader;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.Scripts.ColoringScriptParser;
 import com.avelov.Center.Scripts.ScriptException;
 
@@ -15,7 +15,7 @@ import com.avelov.Center.Scripts.ScriptException;
  */
 public class SetColoringLoaderFunction implements AutomatonLoaderFunction {
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonBlueprint ab) throws AutomatonLoaderFunctionException {
+    public void run(String parameter, BufferedReader br, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
         String[] params = parameter.split(",");
 
         for (String s : params) {

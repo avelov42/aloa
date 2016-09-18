@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 
 /**
  * Created by mateusz on 21.04.16.
@@ -34,8 +34,7 @@ public class AutomatonLoader {
         functions.put("values",         new SetValuesLoaderFunction());
     }
 
-    public static AutomatonBlueprint loadFromFileHandle(FileHandle fileHandle) throws AutomatonLoaderException {
-        AutomatonBlueprint ab;
+    public static void loadFromFileHandle(FileHandle fileHandle, AutomatonInfo outAutomaton) throws AutomatonLoaderException {
         int lineNumber = 0;
         try (BufferedReader r = fileHandle.reader(1000)) {
             String line;
@@ -49,7 +48,6 @@ public class AutomatonLoader {
             } while (line != null && line.trim().equals(""));
             if (line == null)
                 throw new AutomatonLoaderException("File empty", 0);
-            ab = new AutomatonBlueprint();
 
             //GET ATTRIBUTES
             do {
@@ -61,7 +59,7 @@ public class AutomatonLoader {
                     AutomatonLoaderFunction alf = functions.get(m.group(1).toLowerCase());
                     if (alf == null)
                         throw new AutomatonLoaderException("No such function", lineNumber);
-                    alf.run(m.group(2), r, ab);
+                    alf.run(m.group(2), r, outAutomaton);
                     lineNumber++;
                 }
             } while ((line = r.readLine()) != null);
@@ -70,8 +68,7 @@ public class AutomatonLoader {
         } catch (AutomatonLoaderFunctionException e) {
             throw new AutomatonLoaderException(e.getMessage(), lineNumber);
         }
-        if (!ab.isComplete())
+        if (!outAutomaton.isComplete())
             throw new AutomatonLoaderException("Automaton description incomplete.");
-        return ab;
     }
 }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 
 import java.io.BufferedReader;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -13,7 +13,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class SetImageFunction implements AutomatonLoaderFunction {
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonBlueprint ab) throws AutomatonLoaderFunctionException {
+    public void run(String parameter, BufferedReader br, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
         String[] params = parameter.split("\\s+");
         if (params.length == 2 && params[0].toLowerCase().equals("predefined")) {
             FileHandle script = Gdx.files.internal("predefImages/" + params[1]);

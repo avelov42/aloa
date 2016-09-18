@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.BrushState;
 //import pl.mimuw.backend.Cell.DiscreteCell;
 //import pl.mimuw.backend.Cell.FloatCell;
@@ -15,7 +15,7 @@ import com.avelov.Center.BrushState;
 //value 2
 public class AddBrushStateLoaderFunction implements AutomatonLoaderFunction {
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonBlueprint ab)
+    public void run(String parameter, BufferedReader br, AutomatonInfo ab)
             throws AutomatonLoaderFunctionException {
         String regex = "\\s*(.*?)\\s+\"(.*?)\"\\s*";
         Pattern pattern = Pattern.compile(regex);

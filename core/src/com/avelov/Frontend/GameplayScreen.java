@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import com.avelov.Center.BoardHandler;
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Frontend.CellDrawers.CellDrawer;
 
 
@@ -26,7 +26,7 @@ public class GameplayScreen implements Screen
 {
 
     private BoardHandler handler;
-    private AutomatonBlueprint blueprint;
+    private AutomatonInfo blueprint;
     private Stage stage;
 
     private ShapeRenderer shapeRenderer;

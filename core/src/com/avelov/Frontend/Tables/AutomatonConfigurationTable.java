@@ -1,7 +1,7 @@
 package com.avelov.Frontend.Tables;
 
 import com.avelov.Aloa;
-import com.avelov.Center.Files.AutomatonDescription;
+import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Frontend.Screens.MenuScreen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.Align;
  */
 public class AutomatonConfigurationTable extends DynamicTable
 {
-    public AutomatonConfigurationTable(AutomatonDescription selected)
+    public AutomatonConfigurationTable(AutomatonInfo selected)
     {
         Table configTable = new Table();
         Label automatonName = new Label(selected.toString(), Aloa.assets.skin.get("title", Label.LabelStyle.class));

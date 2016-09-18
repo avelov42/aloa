@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.NativeScripts.SquareGameOfLifeNativeScript;
 import com.avelov.Center.NativeScripts.SquareHeatNativeScript;
 import com.avelov.Center.Scripts.Script;
@@ -29,7 +29,7 @@ public class SetRulesLoaderFunction implements AutomatonLoaderFunction {
     }
 
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonBlueprint ab) throws AutomatonLoaderFunctionException {
+    public void run(String parameter, BufferedReader br, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
         String[] params = parameter.split("\\s+");
         if (params.length == 2 && params[0].toLowerCase().equals("predefined")) {
             FileHandle script = Gdx.files.internal("predefs/rules/" + params[1]);

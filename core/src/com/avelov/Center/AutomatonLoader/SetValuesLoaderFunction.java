@@ -3,7 +3,7 @@ package com.avelov.Center.AutomatonLoader;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 //import pl.mimuw.backend.Cell.FloatCell;
 
 /**
@@ -12,7 +12,7 @@ import com.avelov.Center.Files.AutomatonBlueprint;
 public class SetValuesLoaderFunction implements AutomatonLoaderFunction {
 
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonBlueprint ab) throws AutomatonLoaderFunctionException {
+    public void run(String parameter, BufferedReader br, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
         String line;
         //String regex = "\\s*(\\d+)\\s+(\\d+)\\s*\\[\\s*(\\d+)\\s*\\]\\s+(.+?)\\s*";
 

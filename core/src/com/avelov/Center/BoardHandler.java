@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.Files.ISavable;
 import com.avelov.Center.Scripts.Script;
 import com.avelov.Backend.Board.Board;
@@ -36,7 +36,7 @@ public class BoardHandler implements ISavable {
         return topology;
     }
 
-    public BoardHandler(AutomatonBlueprint ab) {
+    public BoardHandler(AutomatonInfo ab) {
         handled = ab.getTopology().getCenterTopology().CreateAutomaton(
                 ab.getBoardSize(), ab.getCellSize(), ab.getBoundaryPolicy(), ab.getValues());
         this.script = ab.getScript();

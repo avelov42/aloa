@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.Scripts.Script;
 import com.avelov.Center.NativeScripts.SquareGameOfLifeNativeScript;
 import com.avelov.Center.NativeScripts.SquareHeatNativeScript;
@@ -22,7 +22,7 @@ public class SetAutomatonLoaderFunction implements AutomatonLoaderFunction {
     }
 
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonBlueprint ab) throws AutomatonLoaderFunctionException {
+    public void run(String parameter, BufferedReader br, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
         String s = parameter.trim().toLowerCase().replaceAll("\\s{2,}", " ");
         Script u = nativeAutomata.get(s);
         if(u == null)

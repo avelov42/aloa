@@ -2,7 +2,7 @@ package com.avelov.Frontend.Tables;
 
 
 import com.avelov.Aloa;
-import com.avelov.Center.Files.AutomatonDescription;
+import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.Files.FileManager;
 import com.avelov.Frontend.Screens.MenuScreen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -20,13 +20,13 @@ public class AutomatonChoiceTable extends DynamicTable
         New,
         Load
     }
-    final List<AutomatonDescription> graphicalAutomataList = new List<>(Aloa.assets.skin);
+    final List<AutomatonInfo> graphicalAutomataList = new List<>(Aloa.assets.skin);
     final Mode mode;
 
     @Override
     public void refresh()
     {
-        ArrayList<AutomatonDescription> fetchedList;
+        ArrayList<AutomatonInfo> fetchedList;
         switch(mode)
         {
             case New:
@@ -41,7 +41,7 @@ public class AutomatonChoiceTable extends DynamicTable
         }
         graphicalAutomataList.clearItems();
         //@todo Write nice handling of case when list is empty (non-clickable "The list is empty..")
-        graphicalAutomataList.setItems(fetchedList.toArray(new AutomatonDescription[fetchedList.size()]));
+        graphicalAutomataList.setItems(fetchedList.toArray(new AutomatonInfo[fetchedList.size()]));
     }
 
     public AutomatonChoiceTable(final Mode mode)

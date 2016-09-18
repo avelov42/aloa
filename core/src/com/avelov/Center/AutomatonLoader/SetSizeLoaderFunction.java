@@ -2,14 +2,14 @@ package com.avelov.Center.AutomatonLoader;
 
 import java.io.BufferedReader;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 
 /**
  * Created by mateusz on 21.04.16.
  */
 public class SetSizeLoaderFunction implements AutomatonLoaderFunction {
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonBlueprint ab) throws AutomatonLoaderFunctionException {
+    public void run(String parameter, BufferedReader br, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
         try {
             ab.setBoardSize(Integer.parseInt(parameter));
         } catch (NumberFormatException e) {

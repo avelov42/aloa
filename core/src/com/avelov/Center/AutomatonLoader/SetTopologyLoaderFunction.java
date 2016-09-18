@@ -2,7 +2,7 @@ package com.avelov.Center.AutomatonLoader;
 
 import java.io.BufferedReader;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.TopologyPackage.HexTopology;
 import com.avelov.Center.TopologyPackage.ITopology;
 import com.avelov.Center.TopologyPackage.SquareTopology;
@@ -12,7 +12,7 @@ import com.avelov.Center.TopologyPackage.SquareTopology;
  */
 public class SetTopologyLoaderFunction implements AutomatonLoaderFunction {
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonBlueprint ab)
+    public void run(String parameter, BufferedReader br, AutomatonInfo ab)
             throws AutomatonLoaderFunctionException {
         ITopology t;
         switch (parameter) {

@@ -2,7 +2,7 @@ package com.avelov.Center.AutomatonLoader;
 
 import java.io.BufferedReader;
 
-import com.avelov.Center.Files.AutomatonBlueprint;
+import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Backend.Boundary.BoundaryConstant;
 import com.avelov.Backend.Boundary.BoundaryMirror;
 import com.avelov.Backend.Boundary.BoundaryPolicy;
@@ -14,7 +14,7 @@ import com.avelov.Backend.Boundary.BoundaryWrap;
  */
 public class SetBoundaryLoaderFunction implements AutomatonLoaderFunction {
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonBlueprint ab) throws AutomatonLoaderFunctionException {
+    public void run(String parameter, BufferedReader br, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
         String param = parameter.trim().toLowerCase();
         if(param.equals(""))
             throw new AutomatonLoaderFunctionException("No boundary provided", "Boundary");

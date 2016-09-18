@@ -1,12 +1,10 @@
 package com.avelov.Center.Files;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 
 import com.avelov.Center.*;
@@ -28,42 +26,42 @@ public class FileManager
         }
     };
 
-    public static ArrayList<AutomatonDescription> getPredefinedAutomata() {
-        ArrayList<AutomatonDescription> ret = new ArrayList<>();
+    public static ArrayList<AutomatonInfo> getPredefinedAutomata() {
+        ArrayList<AutomatonInfo> ret = new ArrayList<>();
         FileHandle[] fhs;
         fhs = Gdx.files.internal("predefs/automaton/").list();
 
         Arrays.sort(fhs, byDateComparator);
         for (FileHandle fh : fhs) {
             if (fh.extension().equals("automaton"))
-                ret.add(new AutomatonDescription(fh.nameWithoutExtension(), fh.path()));
+                ret.add(new AutomatonInfo(fh.nameWithoutExtension(), fh.path()));
         }
         return ret;
     }
 
-    public static ArrayList<AutomatonDescription> getSavedAutomata()
+    public static ArrayList<AutomatonInfo> getSavedAutomata()
     {
-        ArrayList<AutomatonDescription> ret = new ArrayList<>();
+        ArrayList<AutomatonInfo> ret = new ArrayList<>();
         FileHandle[] fhs;
         fhs = Gdx.files.local("automaton/").list();
         Arrays.sort(fhs, byDateComparator);
         for (FileHandle fh : fhs) {
             if (fh.extension().equals("automaton"))
-                ret.add(new AutomatonDescription(fh.nameWithoutExtension(), fh.path()));
+                ret.add(new AutomatonInfo(fh.nameWithoutExtension(), fh.path()));
         }
         return ret;
     }
 
-    public static AutomatonBlueprint loadPredefinedAutomaton(String filePath)
+    public static void loadPredefinedAutomaton(AutomatonInfo outAutomaton)
             throws AutomatonLoaderException {
-        FileHandle fh = Gdx.files.internal(filePath);
-        return AutomatonLoader.loadFromFileHandle(fh);
+        FileHandle fh = Gdx.files.internal(outAutomaton.getFilePath());
+        AutomatonLoader.loadFromFileHandle(fh, outAutomaton);
     }
 
-    public static AutomatonBlueprint loadSavedAutomaton(String filePath)
+    public static void loadSavedAutomaton(AutomatonInfo outAutomaton)
             throws AutomatonLoaderException {
-        FileHandle fh = Gdx.files.local(filePath);
-        return AutomatonLoader.loadFromFileHandle(fh);
+        FileHandle fh = Gdx.files.local(outAutomaton.getFilePath());
+        AutomatonLoader.loadFromFileHandle(fh, outAutomaton);
     }
 
     public static void SaveAutomaton(BoardHandler bh, String fileName) {

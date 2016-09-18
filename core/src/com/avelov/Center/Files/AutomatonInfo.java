@@ -22,8 +22,10 @@ import com.avelov.Backend.Cell.CellValue;
  * required to build new automaton. Used by @AutomataFactory.
  */
 
-public final class AutomatonBlueprint implements ISavable {
+public final class AutomatonInfo implements ISavable {
     private boolean                     areRulesPredefined  = false;
+    private String                      automatonFilePath;
+    private String                      automatonName;
     private BoundaryPolicy              boundaryPolicy;
     private int                         boardSize           = -1;
     private ArrayList<BrushState>       brushStates         = new ArrayList<>();
@@ -39,7 +41,10 @@ public final class AutomatonBlueprint implements ISavable {
     private ITopology                   topology;
     private Map<Coordinates, CellValue> values              = new HashMap<>();
 
-    public AutomatonBlueprint() {}
+    public AutomatonInfo(String name, String filePath) {
+        this.automatonFilePath = filePath;
+        this.automatonName = name;
+    }
 
     public boolean isComplete() {
         return topology != null &&
@@ -238,7 +243,15 @@ public final class AutomatonBlueprint implements ISavable {
         public String toString()
         {
             return name;
-
         }
+    }
+
+    public String getName() {
+        return automatonName;
+    }
+
+    public String getFilePath()
+    {
+        return automatonFilePath;
     }
 }
