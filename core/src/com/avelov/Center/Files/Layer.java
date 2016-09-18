@@ -24,8 +24,8 @@ public class Layer {
         this.tinters = tinters;
         this.brushStates = new ArrayList<>();
         this.def = def;
-        defState = new BrushState(new float[]{def}, "Default");
-        this.brushStates.add(new BrushState(new float[]{def}, "Default"));
+        defState = new BrushState(def, "Default");
+        this.brushStates.add(new BrushState(def, "Default"));
     }
 
     public List<AutomatonInfo.TinterDetails> getTinters() {
