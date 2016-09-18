@@ -18,7 +18,7 @@ public class MenuTable extends DynamicTable
             @Override
             public void changed(ChangeEvent event, Actor actor)
             {
-                MenuScreen.getInstance().pushTable(new com.avelov.Frontend.Tables.AutomatonChoiceTable(com.avelov.Frontend.Tables.AutomatonChoiceTable.Mode.New));
+                MenuScreen.getInstance().pushTable(new AutomatonChoiceTable(com.avelov.Frontend.Tables.AutomatonChoiceTable.Mode.New));
             }
         });
         TextButton savedSimulationsButton = new TextButton("Saved simulations", Aloa.assets.skin);
@@ -27,7 +27,7 @@ public class MenuTable extends DynamicTable
             @Override
             public void changed(ChangeEvent event, Actor actor)
             {
-                MenuScreen.getInstance().pushTable(new com.avelov.Frontend.Tables.AutomatonChoiceTable(com.avelov.Frontend.Tables.AutomatonChoiceTable.Mode.Load));
+                MenuScreen.getInstance().pushTable(new AutomatonChoiceTable(com.avelov.Frontend.Tables.AutomatonChoiceTable.Mode.Load));
             }
         });
         TextButton infoButton = new TextButton("Info", Aloa.assets.skin);
@@ -36,7 +36,7 @@ public class MenuTable extends DynamicTable
             @Override
             public void changed(ChangeEvent event, Actor actor)
             {
-                MenuScreen.getInstance().pushTable(new com.avelov.Frontend.Tables.InfoTable(Aloa.assets.aloaAbout));
+                MenuScreen.getInstance().pushTable(new InfoTable(Aloa.assets.aloaAbout));
             }
         });
         TextButton exitButton = new TextButton("Exit", Aloa.assets.skin);

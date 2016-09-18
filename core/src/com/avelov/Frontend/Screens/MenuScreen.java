@@ -1,9 +1,15 @@
 package com.avelov.Frontend.Screens;
 
 import com.avelov.Aloa;
+import com.avelov.Backend.Boundary.BoundaryWrap;
+import com.avelov.Center.BoardHandler;
+import com.avelov.Center.Files.AutomatonInfo;
+import com.avelov.Center.Files.FileManager;
+import com.avelov.Frontend.GameplayScreen;
 import com.avelov.Frontend.Tables.DynamicTable;
 import com.avelov.Frontend.Tables.MenuTable;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Interpolation;
@@ -14,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class MenuScreen implements Screen
@@ -79,7 +86,11 @@ public class MenuScreen implements Screen
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
+        if(Gdx.input.isKeyPressed(Input.Keys.X))
+        {
+            AutomatonInfo toRun = FileManager.getPredefinedAutomata().get(0);
+            Aloa.instance.setScreen(new GameplayScreen(new BoardHandler(toRun, toRun.getTopologies().get(0), new BoundaryWrap())));
+        }
 
         //Action.act(float) returns true when action is done
         if(nextTable != null && isChangingDone(nextTable))

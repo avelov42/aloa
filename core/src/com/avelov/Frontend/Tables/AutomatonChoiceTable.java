@@ -2,8 +2,11 @@ package com.avelov.Frontend.Tables;
 
 
 import com.avelov.Aloa;
+import com.avelov.Backend.Boundary.BoundaryWrap;
+import com.avelov.Center.BoardHandler;
 import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.Files.FileManager;
+import com.avelov.Frontend.GameplayScreen;
 import com.avelov.Frontend.Screens.MenuScreen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -82,7 +85,6 @@ public class AutomatonChoiceTable extends DynamicTable
                         MenuScreen.getInstance().pushTable(new AutomatonConfigurationTable(graphicalAutomataList.getSelected()));
                         break;
                     case Load:
-                        //todo add code which starts GameScreen
                         break;
 
                 }
