@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -14,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.avelov.Center.Files.AutomatonInfo;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.utils.StringBuilder;
 
 /**
@@ -56,11 +58,15 @@ public class AutomatonLoader {
         Map<String, List<Line>> file = parseFile(fileHandle);
         for(AutomatonLoaderFunction alf : functionsList) {
             List<Line> lines = file.get(alf.getName());
+            if(lines == null)
+            {
+                System.err.println("Lines null");
+            }
             for(Line line : lines)
                 try {
                     alf.run(line, outAutomaton);
                 } catch (AutomatonLoaderFunctionException e) {
-
+                    System.err.println(e.toString());
                 }
         }
     }
@@ -171,16 +177,24 @@ public class AutomatonLoader {
                 else sb.append(c);
             }
         }
+
+        if(isQuoted) {
+            System.err.println("Mismatched quote"); //TODO throw
+        }
+
+        if(sb.length() > 0)
+            ret.add(sb.toString());
         return ret;
     }
 
     public static Map<String, List<Line>> parseFile(FileHandle fileHandle)
     {
         Map<String, List<Line>> ret = new TreeMap<>();
-        int lineNumber = 1;
+        int lineNumber = 0;
         try (BufferedReader r = fileHandle.reader(1000)) {
             String line;
             while ((line = r.readLine()) != null) {
+                lineNumber++;
                 int comment = line.indexOf('#');
                 if(comment != -1)
                     line = line.substring(0, comment);
@@ -201,12 +215,11 @@ public class AutomatonLoader {
                     lines.add(l);
                     ret.put(split[0], lines);
                 }
-                lineNumber++;
             }
         } catch (IOException e) {
             return null;
         }
-        return null;
+        return ret;
     }
 
     public static String extract(FileHandle fileHandle, String key) {

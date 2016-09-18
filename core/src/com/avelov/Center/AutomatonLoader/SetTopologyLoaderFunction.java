@@ -50,7 +50,7 @@ public class SetTopologyLoaderFunction implements AutomatonLoaderFunction {
                 throw new AutomatonLoaderFunctionException("No such topology.", "Topology");
         }
 
-        String scr = line.tokens.get(2);
+        String scr = line.tokens.get(1);
         String name;
         boolean isPredefined = false;
         boolean isNative = false;

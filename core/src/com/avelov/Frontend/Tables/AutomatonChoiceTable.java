@@ -3,6 +3,7 @@ package com.avelov.Frontend.Tables;
 
 import com.avelov.Aloa;
 import com.avelov.Backend.Boundary.BoundaryWrap;
+import com.avelov.Center.AutomatonLoader.AutomatonLoaderException;
 import com.avelov.Center.BoardHandler;
 import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.Files.FileManager;
@@ -82,6 +83,17 @@ public class AutomatonChoiceTable extends DynamicTable
                 switch(mode)
                 {
                     case New:
+                        try
+                        {
+                            FileManager.loadPredefinedAutomaton(graphicalAutomataList.getSelected());
+                            MenuScreen.getInstance().pushTable(new AutomatonConfigurationTable(graphicalAutomataList.getSelected()));
+                        }
+                        catch(AutomatonLoaderException e)
+                        {
+                            e.printStackTrace();
+                            MenuScreen.getInstance().showDialog("Cannot load this automaton.\nPlease check syntax in file.");
+                        }
+
                         MenuScreen.getInstance().pushTable(new AutomatonConfigurationTable(graphicalAutomataList.getSelected()));
                         break;
                     case Load:
