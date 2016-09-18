@@ -6,7 +6,9 @@ import com.avelov.Frontend.Tables.MenuTable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -17,32 +19,57 @@ import java.util.Stack;
 public class MenuScreen implements Screen
 {
     static private MenuScreen instance;
-
-    private Stack<DynamicTable> tableStack;
+    private final float tablePositionX = 40, tablePositionY = 50;
+    private final float tableSizeX = 900, tableSizeY = 750;
+    private final float tableChangeDuration = 1; //seconds
+    private final Interpolation tableChangeLook = Interpolation.swing;
     private Stage stage;
+    private Stack<DynamicTable> tableStack;
+
+    private DynamicTable previousTable, nextTable;
+    private boolean changing;
 
     private MenuScreen()
     {
         tableStack = new Stack<>();
         stage = new Stage();
-        pushTable(new MenuTable());
+        tableStack.push(new MenuTable());
+        tableStack.peek().setSize(ux(tableSizeX), uy(tableSizeY));
+        tableStack.peek().setPosition(ux(tablePositionX), uy(tablePositionY));
+        stage.addActor(tableStack.peek());
     }
 
     public void pushTable(DynamicTable table)
     {
-        tableStack.push(table);
-        stage.clear();
-        stage.addActor(tableStack.peek());
-        //table.setFillParent(true);
-        table.setSize(ux(900), uy(750));
-        table.setPosition(ux(50), (uy(40)));
+        if(!changing)
+        {
+            nextTable = table;
+            previousTable = tableStack.peek();
+            nextTable.setSize(ux(tableSizeX), uy(tableSizeY));
+            nextTable.setPosition(ux(1000 + tablePositionX) , uy(tablePositionY));
+            tableStack.push(nextTable);
+            stage.addActor(nextTable);
+            previousTable.addAction(Actions.moveTo(ux(-1000 + tablePositionX), uy(tablePositionY), tableChangeDuration, tableChangeLook));
+            nextTable.addAction(Actions.moveTo(ux(tablePositionX), uy(tablePositionY), tableChangeDuration, tableChangeLook));
+            changing = true;
+        }
     }
 
     public void popTable()
     {
-        tableStack.pop();
-        stage.clear();
-        stage.addActor(tableStack.peek());
+        if(!changing)
+        {
+            previousTable = tableStack.pop();
+            nextTable = tableStack.peek();
+            previousTable.addAction(Actions.moveTo(ux(1000 + tablePositionX), uy(tablePositionY), tableChangeDuration, tableChangeLook));
+            nextTable.addAction(Actions.moveTo(ux(tablePositionX), uy(tablePositionY), tableChangeDuration, tableChangeLook));
+            changing = true;
+        }
+    }
+
+    private boolean isChangingDone(DynamicTable table)
+    {
+        return table.getActions().size > 0;
     }
 
     @Override
@@ -50,6 +77,16 @@ public class MenuScreen implements Screen
     {
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //Action.act(float) returns true when action is done
+        if(nextTable != null && isChangingDone(nextTable))
+        {
+            //first frame after end of changing table
+            changing = false;
+            nextTable = null;
+            previousTable = null;
+        }
+
 
         stage.act();
         stage.draw();
