@@ -6,17 +6,14 @@ import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.Files.Layer;
 import com.avelov.Frontend.Screens.MenuScreen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +30,7 @@ public class AutomatonConfigurationTable extends DynamicTable
 
     final SelectBox<AutomatonInfo.TinterDetails> coloringChoice;
     final SelectBox<BrushState> constantValueChoice;
+    Label constantBoundaryValueLabel;
 
 
     private void incrementCurrentLayer()
@@ -49,16 +47,27 @@ public class AutomatonConfigurationTable extends DynamicTable
     private void updateLayerDependents()
     {
         layerLabel.setText(layers.get(currentLayer).getName());
-        coloringChoice.setItems(layers.get(currentLayer).getTinters().toArray(new AutomatonInfo.TinterDetails[layers.get(currentLayer).getBrushStates().size()]));
+//        coloringChoice.setItems(new AutomatonInfo.TinterDetails(null, "/jakisfejkowy/path/mateusznapraw.coloring", false));
+        coloringChoice.setItems(layers.get(currentLayer).getTinters().toArray(new AutomatonInfo.TinterDetails[layers.get(currentLayer).getTinters().size()]));
         constantValueChoice.setItems(layers.get(currentLayer).getBrushStates().toArray(new BrushState[layers.get(currentLayer).getBrushStates().size()]));
         constantValueChoice.setSelected(layers.get(currentLayer).getDefState());
+//        constantValueChoice.setItems(new BrushState(new float[3], "ASD"), new BrushState(new float[3], "RPiS"));
         constantValueChoice.setVisible(boundaryChoice.getSelected().equals("Constant value"));
+        constantBoundaryValueLabel.setVisible(boundaryChoice.getSelected().equals("Constant value"));
+
     }
 
 
+    @Override
+    public void act(float delta)
+    {
+        super.act(delta);
+        updateLayerDependents(); //@todo please solve it in a better way
+    }
+
     public AutomatonConfigurationTable(AutomatonInfo selected)
     {
-        Table configTable = new Table();
+        Table automatonConfig = new Table(), layerConfig = new Table();
         Label automatonName = new Label(selected.getName(), Aloa.assets.skin.get("title", Label.LabelStyle.class));
         automatonName.setAlignment(Align.center);
 
@@ -73,7 +82,8 @@ public class AutomatonConfigurationTable extends DynamicTable
 
         ImageButton previousLayerButton = Aloa.assets.makeButton("left-arrow");
         ImageButton nextLayerButton = Aloa.assets.makeButton("right-arrow");
-        layerLabel = new Label("", Aloa.assets.skin);
+        layerLabel = new Label("KOTEK", Aloa.assets.skin.get("title", Label.LabelStyle.class));
+        layerLabel.setAlignment(Align.center);
         previousLayerButton.addListener(new ChangeListener()
         {
             @Override
@@ -93,6 +103,7 @@ public class AutomatonConfigurationTable extends DynamicTable
 
 
         Label coloringLabel = new Label("Layer color theme:", Aloa.assets.skin);
+        constantBoundaryValueLabel = new Label("Constant boundary value: ", Aloa.assets.skin);
 
         coloringChoice = new SelectBox<>(Aloa.assets.skin);
         constantValueChoice = new SelectBox<>(Aloa.assets.skin);
@@ -125,25 +136,41 @@ public class AutomatonConfigurationTable extends DynamicTable
 
 
 
-        final int columns = 2;
+        final int automatonColumns = 2;
 
-        configTable.top();
-        configTable.add(automatonName).colspan(2).fill().padBottom(uy(40)).row();
-        configTable.add(coloringLabel).colspan(columns).fill().expandX().padBottom(uy(10)).row();
-        configTable.add(coloringChoice).colspan(columns).fill().expandX().padBottom(uy(32)).row();
-        //configTable.add(boundaryLabel).colspan(columns).fill().expandX().padBottom(uy(10)).row();
-       // configTable.add(boundaryChoice).colspan(columns).fill().expandX().padBottom(uy(32)).row();
-        configTable.add(sizeLabel).expandX().center();
-        configTable.add(sizeInput).fill().expandX().pad(uy(20)).row();
-        configTable.add(configLabel).expandX().center();
-        configTable.add(configInput).fill().expandX().pad(uy(20)).row();
+//        automatonConfig.debug();
+        automatonConfig.top();
+        automatonConfig.add(automatonName).colspan(automatonColumns).fill().spaceBottom(uy(32)).row();
 
-        add(configTable).expand().fill().colspan(2).padBottom(20).row();
-        add(backButton).left().width(ux(MenuScreen.BUTTON_SIZE)).height(uy(MenuScreen.BUTTON_SIZE));;
-        add(nextButton).right().width(ux(MenuScreen.BUTTON_SIZE)).height(uy(MenuScreen.BUTTON_SIZE));;
+        automatonConfig.add(boundaryLabel).colspan(automatonColumns).fill().expandX().spaceBottom(uy(10)).row();
+        automatonConfig.add(boundaryChoice).colspan(automatonColumns).fill().expandX().spaceBottom(uy(16)).row();
 
-        //outerTable.debug();
+        automatonConfig.add(sizeLabel).expandX().center().space(uy(20));
+        automatonConfig.add(sizeInput).fill().expandX().space(uy(20)).row();
+        automatonConfig.add(configLabel).expandX().center().space(uy(20));
+        automatonConfig.add(configInput).fill().expandX().space(uy(20)).row();
 
+
+        final int layerColumns = 3;
+
+//        layerConfig.debug();
+        //ayerConfig.top();
+        layerConfig.add(previousLayerButton).fill().width(MenuScreen.BUTTON_SIZE_X/6).height(MenuScreen.BUTTON_SIZE_Y/6).padBottom(uy(24));
+        layerConfig.add(layerLabel).fill().expand().center().padBottom(uy(24)).padLeft(ux(12)).padRight(ux(12));
+        layerConfig.add(nextLayerButton).fill().width(MenuScreen.BUTTON_SIZE_X/6).height(MenuScreen.BUTTON_SIZE_Y/6).padBottom(uy(24)).row();
+        layerConfig.add(coloringLabel).colspan(layerColumns).fill().expandX().padBottom(uy(10)).row();
+        layerConfig.add(coloringChoice).colspan(layerColumns).fill().expandX().padBottom(uy(32)).row();
+        layerConfig.add(constantBoundaryValueLabel).colspan(layerColumns).fill().expandX().padBottom(uy(10)).row();
+        layerConfig.add(constantValueChoice).colspan(layerColumns).fill().expandX().row();
+
+        add(automatonConfig).expand().fill().colspan(2).padBottom(uy(32)).row(); //todo wtf, why 100 is needed?
+        add(layerConfig).expand().fill().colspan(2).padBottom(uy(20)).row();
+
+//        debug();
+
+        add(backButton).fill().left().width(ux(MenuScreen.BUTTON_SIZE_X)).height(uy(MenuScreen.BUTTON_SIZE_Y));
+        add(nextButton).fill().right().width(ux(MenuScreen.BUTTON_SIZE_X)).height(uy(MenuScreen.BUTTON_SIZE_Y));
+//        debug();
     }
 
     private float ux(float millage)

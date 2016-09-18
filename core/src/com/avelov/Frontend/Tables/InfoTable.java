@@ -32,7 +32,7 @@ public class InfoTable extends DynamicTable
                 MenuScreen.getInstance().popTable();
             }
         });
-        add(backButton).width(ux(MenuScreen.BUTTON_SIZE)).height(uy(MenuScreen.BUTTON_SIZE));
+        add(backButton).width(ux(MenuScreen.BUTTON_SIZE_X)).height(uy(MenuScreen.BUTTON_SIZE_Y));
     }
 
     @Override

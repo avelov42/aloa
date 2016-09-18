@@ -19,6 +19,9 @@ public class BrushState implements ISavable {
         return description;
     }
 
+    @Override
+    public String toString() { return getDescription(); }
+
     public CellValue getCell() {
         return cv;
     }

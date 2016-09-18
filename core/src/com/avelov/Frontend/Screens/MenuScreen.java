@@ -26,10 +26,11 @@ import java.util.Stack;
 public class MenuScreen implements Screen
 {
     private static MenuScreen instance;
-    public static final float BUTTON_SIZE = 250;
-    public static final float TABLE_POSITION_X = 40, TABLE_POSITION_Y = 50;
-    public static final float TABLE_SIZE_X = 900, TABLE_SIZE_Y = 750;
-    public static final float TABLE_CHANGE_DURATION = 1; //seconds
+    public static final float BUTTON_SIZE_X = 240;
+    public static final float BUTTON_SIZE_Y = 160;
+    public static final float TABLE_POSITION_X = 40, TABLE_POSITION_Y = 15;
+    public static final float TABLE_SIZE_X = 900, TABLE_SIZE_Y = 800;
+    public static final float TABLE_CHANGE_DURATION = 0.5f; //seconds
     public static final Interpolation TABLE_CHANGE_LOOK = Interpolation.swing;
     private Stage stage;
     private Stack<DynamicTable> tableStack;
