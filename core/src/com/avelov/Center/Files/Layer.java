@@ -1,5 +1,7 @@
 package com.avelov.Center.Files;
 
+import com.avelov.Center.BrushState;
+
 import java.util.List;
 
 /**
@@ -11,6 +13,7 @@ public class Layer {
     private float max;
     private float def;
     private List<AutomatonInfo.TinterDetails> tinters;
+    private List<BrushState> brushStates;
 
     public Layer(String name, float min, float max, float def, List<AutomatonInfo.TinterDetails> tinters) {
         this.name = name;
@@ -58,5 +61,13 @@ public class Layer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<BrushState> getBrushStates() {
+        return brushStates;
+    }
+
+    public void setBrushStates(List<BrushState> brushStates) {
+        this.brushStates = brushStates;
     }
 }
