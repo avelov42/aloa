@@ -24,8 +24,7 @@ import com.avelov.Frontend.CellDrawers.CellDrawer;
  */
 public class GameplayScreen implements Screen
 {
-    public static long MAX_WAIT_TIME = 42 * 10;
-    public static int START_SPEED_PERCENT = 50;
+
     private BoardHandler handler;
     private AutomatonBlueprint blueprint;
     private Stage stage;
@@ -63,7 +62,7 @@ public class GameplayScreen implements Screen
         this.brush = new Brush(handler, boardView, handler.getBrushStates());
         this.brushWindow = new BrushWindow(brush);
 
-        this.speedWindow = new SpeedWindow(new SpeedMeter(MAX_WAIT_TIME, START_SPEED_PERCENT));
+        this.speedWindow = new SpeedWindow(new SpeedMeter(SpeedMeter.START_SPEED_PERCENT, SpeedMeter.MAX_WAIT_TIME));
 
         this.boardController = new BoardController(boardView, brushWindow);
         this.debugInputProcessor = new DebugInputProcessor(this, handler, boardView, brushWindow);
@@ -150,13 +149,14 @@ public class GameplayScreen implements Screen
 
         stage.act();
         stage.draw();
-        if (speedWindow.isTimeToStep()) {
-
+        if (speedWindow.shouldMakeStep())
+        {
             handler.makeStep();
             calls++;
         }
 
-        if (TimeUtils.millis() > nextMillis) {
+        if (TimeUtils.millis() > nextMillis)
+        {
             System.out.println(calls);
             calls = 0;
             nextMillis = TimeUtils.millis() + 1000;
@@ -168,7 +168,7 @@ public class GameplayScreen implements Screen
     @Override
     public void dispose()
     {
-        //@todo :)
+
     }
 
     public void pauseOrResume()
@@ -176,7 +176,7 @@ public class GameplayScreen implements Screen
         if(speedWindow.isPaused())
             speedWindow.pause();
         else
-        speedWindow.resume();
+            speedWindow.resume();
 
     }
     @Override

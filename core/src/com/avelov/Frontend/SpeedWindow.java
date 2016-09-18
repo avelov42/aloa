@@ -75,8 +75,8 @@ public class SpeedWindow extends Window
         return speedMeter.isPaused();
     }
 
-    public boolean isTimeToStep()
+    public boolean shouldMakeStep()
     {
-        return speedMeter.isTimeToStep();
+        return speedMeter.shouldMakeStep();
     }
 }

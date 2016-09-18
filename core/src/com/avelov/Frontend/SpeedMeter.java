@@ -7,13 +7,16 @@ import com.badlogic.gdx.utils.TimeUtils;
  */
 public class SpeedMeter
 {
+    public static long MAX_WAIT_TIME = 42 * 10;
+    public static int START_SPEED_PERCENT = 50;
+
     private long maxWaitTime; //time between steps when speed == 1%
     private long currentWaitTime; //time between steps at current speed
     private long sinceLastUpdate; //time already elapsed since last tick
     private long lastTickTime; //timestamp from last tick to compute elapsed time
     private int savedSpeed;
 
-    public SpeedMeter(long maxWaitTime, int startValue)
+    public SpeedMeter(int startValue, long maxWaitTime)
     {
         this.maxWaitTime = maxWaitTime;
         lastTickTime = TimeUtils.millis();
@@ -65,7 +68,7 @@ public class SpeedMeter
         }
     }
 
-    public boolean isTimeToStep()
+    public boolean shouldMakeStep()
     {
         sinceLastUpdate += TimeUtils.millis() - lastTickTime;
         lastTickTime = TimeUtils.millis();
