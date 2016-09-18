@@ -89,10 +89,12 @@ public class AutomatonChoiceTable extends DynamicTable
             }
         });
 
+
+
        add(scrollPane).expand().fill().colspan(3).padBottom(uy(20)).row();
-       add(backButton).left();
-       add(infoButton);
-       add(nextButton).right();
+       add(backButton).left().width(ux(MenuScreen.BUTTON_SIZE)).height(uy(MenuScreen.BUTTON_SIZE));
+       add(infoButton).width(ux(MenuScreen.BUTTON_SIZE)).height(uy(MenuScreen.BUTTON_SIZE));
+       add(nextButton).right().width(ux(MenuScreen.BUTTON_SIZE)).height(uy(MenuScreen.BUTTON_SIZE));
     }
 
     private float ux(float millage)

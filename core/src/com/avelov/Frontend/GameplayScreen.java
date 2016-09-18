@@ -22,6 +22,7 @@ import com.avelov.Frontend.CellDrawers.CellDrawer;
  * @todo Fix matrix chaos
  * @todo Use assets manager
  */
+
 public class GameplayScreen implements Screen
 {
 
@@ -59,7 +60,7 @@ public class GameplayScreen implements Screen
         this.handler = handler;
 
         this.boardView = new BoardRenderer(handler, drawer);
-        this.brush = new Brush(handler, boardView, handler.getBrushStates());
+        //this.brush = new Brush(handler, boardView, handler.getBrushStates());
         this.brushWindow = new BrushWindow(brush);
 
         this.speedWindow = new SpeedWindow(new SpeedMeter(SpeedMeter.START_SPEED_PERCENT, SpeedMeter.MAX_WAIT_TIME));

@@ -18,11 +18,12 @@ import java.util.Stack;
 
 public class MenuScreen implements Screen
 {
-    static private MenuScreen instance;
-    private final float tablePositionX = 40, tablePositionY = 50;
-    private final float tableSizeX = 900, tableSizeY = 750;
-    private final float tableChangeDuration = 1; //seconds
-    private final Interpolation tableChangeLook = Interpolation.swing;
+    private static MenuScreen instance;
+    public static final float BUTTON_SIZE = 250;
+    public static final float TABLE_POSITION_X = 40, TABLE_POSITION_Y = 50;
+    public static final float TABLE_SIZE_X = 900, TABLE_SIZE_Y = 750;
+    public static final float TABLE_CHANGE_DURATION = 1; //seconds
+    public static final Interpolation TABLE_CHANGE_LOOK = Interpolation.swing;
     private Stage stage;
     private Stack<DynamicTable> tableStack;
 
@@ -34,8 +35,8 @@ public class MenuScreen implements Screen
         tableStack = new Stack<>();
         stage = new Stage();
         tableStack.push(new MenuTable());
-        tableStack.peek().setSize(ux(tableSizeX), uy(tableSizeY));
-        tableStack.peek().setPosition(ux(tablePositionX), uy(tablePositionY));
+        tableStack.peek().setSize(ux(TABLE_SIZE_X), uy(TABLE_SIZE_Y));
+        tableStack.peek().setPosition(ux(TABLE_POSITION_X), uy(TABLE_POSITION_Y));
         stage.addActor(tableStack.peek());
     }
 
@@ -45,12 +46,12 @@ public class MenuScreen implements Screen
         {
             nextTable = table;
             previousTable = tableStack.peek();
-            nextTable.setSize(ux(tableSizeX), uy(tableSizeY));
-            nextTable.setPosition(ux(1000 + tablePositionX) , uy(tablePositionY));
+            nextTable.setSize(ux(TABLE_SIZE_X), uy(TABLE_SIZE_Y));
+            nextTable.setPosition(ux(1000 + TABLE_POSITION_X) , uy(TABLE_POSITION_Y));
             tableStack.push(nextTable);
             stage.addActor(nextTable);
-            previousTable.addAction(Actions.moveTo(ux(-1000 + tablePositionX), uy(tablePositionY), tableChangeDuration, tableChangeLook));
-            nextTable.addAction(Actions.moveTo(ux(tablePositionX), uy(tablePositionY), tableChangeDuration, tableChangeLook));
+            previousTable.addAction(Actions.moveTo(ux(-1000 + TABLE_POSITION_X), uy(TABLE_POSITION_Y), TABLE_CHANGE_DURATION, TABLE_CHANGE_LOOK));
+            nextTable.addAction(Actions.moveTo(ux(TABLE_POSITION_X), uy(TABLE_POSITION_Y), TABLE_CHANGE_DURATION, TABLE_CHANGE_LOOK));
             changing = true;
         }
     }
@@ -61,8 +62,8 @@ public class MenuScreen implements Screen
         {
             previousTable = tableStack.pop();
             nextTable = tableStack.peek();
-            previousTable.addAction(Actions.moveTo(ux(1000 + tablePositionX), uy(tablePositionY), tableChangeDuration, tableChangeLook));
-            nextTable.addAction(Actions.moveTo(ux(tablePositionX), uy(tablePositionY), tableChangeDuration, tableChangeLook));
+            previousTable.addAction(Actions.moveTo(ux(1000 + TABLE_POSITION_X), uy(TABLE_POSITION_Y), TABLE_CHANGE_DURATION, TABLE_CHANGE_LOOK));
+            nextTable.addAction(Actions.moveTo(ux(TABLE_POSITION_X), uy(TABLE_POSITION_Y), TABLE_CHANGE_DURATION, TABLE_CHANGE_LOOK));
             changing = true;
         }
     }
@@ -78,6 +79,8 @@ public class MenuScreen implements Screen
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+
         //Action.act(float) returns true when action is done
         if(nextTable != null && isChangingDone(nextTable))
         {
@@ -86,7 +89,6 @@ public class MenuScreen implements Screen
             nextTable = null;
             previousTable = null;
         }
-
 
         stage.act();
         stage.draw();
@@ -149,13 +151,12 @@ public class MenuScreen implements Screen
     Using ux() and uy() allows to set ratio-independent distances between UI actors.
     Just express distances in promiles of width for ux and height for uy. (1% == 10%%)
      */
-    static private final float viewportX = 540, viewportY = 960;
     static public float ux(float x)
     {
-        return x / 1000f * viewportX;
+        return x / 1000f * Gdx.graphics.getWidth();
     }
     static public float uy(float y)
     {
-        return y / 1000f * viewportY;
+        return y / 1000f * Gdx.graphics.getHeight();
     }
 }
