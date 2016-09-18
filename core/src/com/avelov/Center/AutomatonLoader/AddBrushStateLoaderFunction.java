@@ -6,31 +6,36 @@ import java.util.regex.Pattern;
 
 import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.BrushState;
-//import pl.mimuw.backend.Cell.DiscreteCell;
-//import pl.mimuw.backend.Cell.FloatCell;
+import com.avelov.Center.Files.Layer;
 
 /**
  * Created by mateusz on 23.04.16.
  */
-//value 2
 public class AddBrushStateLoaderFunction implements AutomatonLoaderFunction {
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonInfo ab)
-            throws AutomatonLoaderFunctionException {
-        String regex = "\\s*(.*?)\\s+\"(.*?)\"\\s*";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher m = pattern.matcher(parameter);
-        if (!m.matches())
-            throw new AutomatonLoaderFunctionException("Syntax error", "AddBrushState");
-        float[] value;
+    public void run(AutomatonLoader.Line line, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
+        if(line.tokens.size() != 3)
+            throw new AutomatonLoaderFunctionException("3 parameters required", "addState");
+
+        Layer l = ab.getLayerByName(line.tokens.get(0));
+        if(l == null)
+            throw new AutomatonLoaderFunctionException(
+                    "Synatx error: first parameter should be layer name",
+                    "addState");
+        float value;
         try {
-            float v = Float.parseFloat(m.group(1));
-            value = new float[] {v};
+            value = Float.parseFloat(line.tokens.get(2));
         } catch (NumberFormatException e) {
             throw new AutomatonLoaderFunctionException(
-                    "Synatx error: first parameter should be a number",
-                    "AddBrushState");
+                    "Synatx error: third parameter should be a number",
+                    "addState");
         }
-        ab.addBrushState(new BrushState(value, m.group(2)));
+
+        l.addBrushState(new BrushState(new float[] {value}, line.tokens.get(1)));
+    }
+
+    @Override
+    public String getName() {
+        return "addstate";
     }
 }

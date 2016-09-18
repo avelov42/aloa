@@ -12,6 +12,7 @@ import com.avelov.Backend.Cell.CellValue;
 public class BrushState implements ISavable {
     private String description;
     private CellValue cv;
+    private float value;
 
     public BrushState(float[] value, String description) {
         this.description = description;
@@ -25,6 +26,8 @@ public class BrushState implements ISavable {
     public CellValue getCell() {
         return cv;
     }
+
+    public float getValue() { return value; }
 
     @Override
     public void save(FileHandle fileHandle) {

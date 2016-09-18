@@ -10,7 +10,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-		final int userHeight = 960; //modify if your screen is too small :P
+		final int userHeight = 700; //modify if your screen is too small :P
 
 		config.width = (int) (540f/960f * userHeight);
 		config.height = userHeight;

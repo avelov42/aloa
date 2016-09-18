@@ -9,11 +9,18 @@ import com.avelov.Center.Files.AutomatonInfo;
  */
 public class SetSizeLoaderFunction implements AutomatonLoaderFunction {
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
+    public void run(AutomatonLoader.Line parameter, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
+        if (parameter.tokens.size() != 1)
+            throw new AutomatonLoaderFunctionException("One parameter required", "size");
         try {
-            ab.setBoardSize(Integer.parseInt(parameter));
+            ab.setBoardSize(Integer.parseInt(parameter.tokens.get(0)));
         } catch (NumberFormatException e) {
-            throw new AutomatonLoaderFunctionException("Parameter is not an integer", "Size");
+            throw new AutomatonLoaderFunctionException("Parameter is not an integer", "size");
         }
+    }
+
+    @Override
+    public String getName() {
+        return "size";
     }
 }

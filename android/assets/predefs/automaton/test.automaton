@@ -1,0 +1,18 @@
+name: "test automaton"
+description: "I'm test"
+
+size: 100
+
+addLayer: "Layer 1" 0 100 0 "predefined layer1Coloring.coloring"
+addLayer: "Layer 2" 500 1000 800 "predefined layer2Coloring1.coloring" "predefined layer2Coloring2.coloring"
+
+addState: "Layer 1" Low 0
+addState: "Layer 1" Medium 50
+addState: "Layer 1" High 90
+
+addState: "Layer 2" Pigs 500
+addState: "Layer 2" Dogs 1000
+addState: "Layer 2" Sheep 700
+
+topology: square "predefined testSquareRules.rules"
+topology: hexagonal "predefined testHexRules.rules"

@@ -9,19 +9,17 @@ import com.avelov.Center.Files.AutomatonInfo;
  * Created by mateusz on 28.07.16.
  */
 public class SetDescriptionFunction implements AutomatonLoaderFunction {
+    @Override
+    public void run(AutomatonLoader.Line line, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
+        if(line.tokens.size() != 1)
+            throw new AutomatonLoaderFunctionException(
+                    "1 parameter required", "Description");
+
+        ab.setDescription(line.tokens.get(0));
+    }
 
     @Override
-    public void run(String parameter, BufferedReader br, AutomatonInfo ab) throws AutomatonLoaderFunctionException {
-        try {
-            String line;
-            StringBuilder sb = new StringBuilder();
-            while (!((line = br.readLine()) == null || line.toLowerCase().equals("descriptionend"))) {
-                sb.append(line);
-            }
-            ab.setDescription(sb.toString());
-        } catch (IOException e) {
-            throw new AutomatonLoaderFunctionException(
-                    "Cannot read description", "Description");
-        }
+    public String getName() {
+        return "description";
     }
 }

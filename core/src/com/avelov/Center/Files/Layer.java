@@ -2,6 +2,7 @@ package com.avelov.Center.Files;
 
 import com.avelov.Center.BrushState;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,16 +12,20 @@ public class Layer {
     private String name;
     private float min;
     private float max;
+    private BrushState defState;
     private float def;
     private List<AutomatonInfo.TinterDetails> tinters;
-    private List<BrushState> brushStates;
+    private ArrayList<BrushState> brushStates;
 
     public Layer(String name, float min, float max, float def, List<AutomatonInfo.TinterDetails> tinters) {
         this.name = name;
         this.min = min;
         this.max = max;
-        this.def = def;
         this.tinters = tinters;
+        this.brushStates = new ArrayList<>();
+        this.def = def;
+        defState = new BrushState(new float[]{def}, "Default");
+        this.brushStates.add(new BrushState(new float[]{def}, "Default"));
     }
 
     public List<AutomatonInfo.TinterDetails> getTinters() {
@@ -43,16 +48,8 @@ public class Layer {
         return max;
     }
 
-    public void setMax(float max) {
-        this.max = max;
-    }
-
     public float getMin() {
         return min;
-    }
-
-    public void setMin(float min) {
-        this.min = min;
     }
 
     public String getName() {
@@ -67,7 +64,27 @@ public class Layer {
         return brushStates;
     }
 
-    public void setBrushStates(List<BrushState> brushStates) {
-        this.brushStates = brushStates;
+    public void addBrushState(BrushState brushState) {
+
+        if(brushState.getValue() == def)
+            defState = brushState;
+
+        boolean found = false;
+        for(int i = 0; i < brushStates.size(); i++) {
+            if(brushStates.get(i).getValue() >= brushState.getValue()) {
+                if(brushStates.get(i).getValue() == brushState.getValue())
+                    brushStates.remove(i);
+
+                brushStates.add(i, brushState);
+                found = true;
+                break;
+            }
+        }
+        if(!found)
+            brushStates.add(brushStates.size(), brushState);
+    }
+
+    public BrushState getDefState() {
+        return defState;
     }
 }

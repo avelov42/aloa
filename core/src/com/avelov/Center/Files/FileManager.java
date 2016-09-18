@@ -34,7 +34,7 @@ public class FileManager
         Arrays.sort(fhs, byDateComparator);
         for (FileHandle fh : fhs) {
             if (fh.extension().equals("automaton"))
-                ret.add(new AutomatonInfo(fh.nameWithoutExtension(), fh.path()));
+                ret.add(new AutomatonInfo(fh));
         }
         return ret;
     }
@@ -47,7 +47,7 @@ public class FileManager
         Arrays.sort(fhs, byDateComparator);
         for (FileHandle fh : fhs) {
             if (fh.extension().equals("automaton"))
-                ret.add(new AutomatonInfo(fh.nameWithoutExtension(), fh.path()));
+                ret.add(new AutomatonInfo(fh));
         }
         return ret;
     }
