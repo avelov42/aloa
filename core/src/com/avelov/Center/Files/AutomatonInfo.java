@@ -1,10 +1,12 @@
 package com.avelov.Center.Files;
 
+import com.avelov.Center.TopologyPackage.SquareTopology;
 import com.avelov.Frontend.CellDrawers.Tinters.Tinter;
 import com.badlogic.gdx.files.FileHandle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.avelov.Center.BrushState;
@@ -38,8 +40,10 @@ public final class AutomatonInfo implements ISavable {
     private int                         minValue;
     private String                      rulesPath;
     private Script                      script;
-    private ITopology                   topology;
+    private List<ITopology>             topology            = new ArrayList<>();
     private Map<Coordinates, CellValue> values              = new HashMap<>();
+    private List<Layer>                 layers              = new ArrayList<>();
+    private boolean                     stringConfigurable  = false;
 
     public AutomatonInfo(String name, String filePath) {
         this.automatonFilePath = filePath;
@@ -47,7 +51,8 @@ public final class AutomatonInfo implements ISavable {
     }
 
     public boolean isComplete() {
-        return topology != null &&
+        return topology.size() > 0 &&
+                layers.size() > 0 &&
                 script != null &&
                 minValue <= maxValue &&
                 colorings.size() != 0 &&
@@ -141,11 +146,12 @@ public final class AutomatonInfo implements ISavable {
         this.script = script;
     }
 
-    public ITopology getTopology() {
+    public List<ITopology> getTopologies()
+    {
         return topology;
     }
-    public void setTopology(ITopology topology) {
-        this.topology = topology;
+    public void addTopology(ITopology topology) {
+        this.topology.add(topology);
     }
 
     public Map<Coordinates, ? extends Cell> getValues() {
@@ -219,7 +225,7 @@ public final class AutomatonInfo implements ISavable {
         }
     }
 
-    public ArrayList<Tinter> getTinters() {
+    public ArrayList<Tinter> getTinters(Layer l) {
         ArrayList<Tinter> ret = new ArrayList<>();
         for(TinterDetails td : colorings)
             ret.add(td.tinter);
@@ -259,5 +265,20 @@ public final class AutomatonInfo implements ISavable {
     public String getFilePath()
     {
         return automatonFilePath;
+    }
+
+    public List<Layer> getLayers()
+    {
+        return layers;
+    }
+
+    public List<BrushState> getStates(Layer l)
+    {
+        return new ArrayList<>();
+    }
+
+    public boolean isStringConfigurable()
+    {
+        return stringConfigurable;
     }
 }

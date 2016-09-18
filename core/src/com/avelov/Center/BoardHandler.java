@@ -24,8 +24,8 @@ public class BoardHandler implements ISavable {
     private ArrayList<BrushState> brushStates;
     private ArrayList<Tinter> colorings;
     private final Board handled;
-    private final int maxValue;
-    private final int minValue;
+    private final float maxValue;
+    private final float minValue;
     private final Script script;
     private final String saveString;
     private ITopology topology;
@@ -36,15 +36,15 @@ public class BoardHandler implements ISavable {
         return topology;
     }
 
-    public BoardHandler(AutomatonInfo ab) {
-        handled = ab.getTopology().getCenterTopology().CreateAutomaton(
+    public BoardHandler(AutomatonInfo ab, ITopology topology) {
+        handled = topology.getCenterTopology().CreateAutomaton(
                 ab.getBoardSize(), ab.getCellSize(), ab.getBoundaryPolicy(), ab.getValues());
         this.script = ab.getScript();
-        this.topology = ab.getTopology();
+        this.topology = topology;
         this.minValue = ab.getMinValue();
         this.maxValue = ab.getMaxValue();
         this.brushStates = ab.getBrushStates();
-        this.colorings = ab.getTinters();
+        this.colorings = null;//ab.getTinters(); TODO
         this.saveString = ab.getSaveString();
     }
 
@@ -124,19 +124,19 @@ public class BoardHandler implements ISavable {
         return brushStates;
     }
 
-    public int getMaxValue() {
+    public float getMaxValue() {
         return maxValue;
     }
 
-    public int getMinValue() {
+    public float getMinValue() {
         return minValue;
     }
 
     @Override
     public void save(FileHandle fileHandle) {
         fileHandle.writeString("topology: " + topology.toString() + "\n", true);
-        fileHandle.writeString("maxValue: " + Integer.toString(maxValue) + "\n", true);
-        fileHandle.writeString("minValue: " + Integer.toString(minValue) + "\n", true);
+        fileHandle.writeString("maxValue: " + Float.toString(maxValue) + "\n", true);
+        fileHandle.writeString("minValue: " + Float.toString(minValue) + "\n", true);
         handled.save(fileHandle);
         fileHandle.writeString(this.saveString, true);
         for (BrushState bs : brushStates)

@@ -28,6 +28,6 @@ public class SetTopologyLoaderFunction implements AutomatonLoaderFunction {
             default:
                 throw new AutomatonLoaderFunctionException("No such topology.", "Topology");
         }
-        ab.setTopology(t);
+        ab.addTopology(t);
     }
 }
