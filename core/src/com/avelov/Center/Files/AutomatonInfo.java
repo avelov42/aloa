@@ -250,6 +250,12 @@ public final class AutomatonInfo implements ISavable {
         return automatonName;
     }
 
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
+
     public String getFilePath()
     {
         return automatonFilePath;
