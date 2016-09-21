@@ -31,7 +31,7 @@ public class AddBrushStateLoaderFunction implements AutomatonLoaderFunction {
                     "addState");
         }
 
-        l.addBrushState(new BrushState(value, line.tokens.get(1)));
+        l.addBrushState(new BrushState(value, line.tokens.get(1), l.getLayerNumber()));
     }
 
     @Override

@@ -40,54 +40,54 @@ public abstract class Board implements ISavable
     //Returns iterator over cells in rectange(c1, c2)
     public abstract Iterator<Cell> getSquare(Coordinates c1, Coordinates c2);
 
-    public void setNextValue(int x, int y, int index, float value) {
+    public void setNextValue(int x, int y, int layer, float value) {
         if(areCoordsCorrect(x,y))
-            nextValues[getValuesIndex(x, y, index)] = value;
+            nextValues[getValuesLayer(x, y, layer)] = value;
     }
 
-    public void setNextValue(int x, int y, int offsetX, int offsetY, int index, float value) {
+    public void setNextValue(int x, int y, int offsetX, int offsetY, int layer, float value) {
         if(areCoordsCorrect(x + offsetX, y + offsetY))
-            nextValues[getValuesIndex(x + offsetX, y + offsetY, index)] = value;
+            nextValues[getValuesLayer(x + offsetX, y + offsetY, layer)] = value;
         else
-            boundary.setValue(x, y, offsetX, offsetY, index, this, value);
+            boundary.setValue(x, y, offsetX, offsetY, layer, this, value);
     }
 
-    public void modifyNextValue(int x, int y, int index, float value) {
+    public void modifyNextValue(int x, int y, int layer, float value) {
         if(areCoordsCorrect(x,y))
-            nextValues[getValuesIndex(x, y, index)] += value;
+            nextValues[getValuesLayer(x, y, layer)] += value;
     }
 
-    public void modifyNextValue(int x, int y, int offsetX, int offsetY, int index, float value) {
+    public void modifyNextValue(int x, int y, int offsetX, int offsetY, int layer, float value) {
         if(areCoordsCorrect(x + offsetX, y + offsetY))
-            nextValues[getValuesIndex(x + offsetX, y + offsetY, index)] += value;
+            nextValues[getValuesLayer(x + offsetX, y + offsetY, layer)] += value;
         else
-            boundary.modifyValue(x, y, offsetX, offsetY, index, this, value);
+            boundary.modifyValue(x, y, offsetX, offsetY, layer, this, value);
     }
 
-    public float getValue(int x, int y, int index)
+    public float getValue(int x, int y, int layer)
     {
-        return values[getValuesIndex(x, y, index)];
+        return values[getValuesLayer(x, y, layer)];
     }
 
-    public float getValue(int x, int y, int offsetX, int offsetY, int index) {
+    public float getValue(int x, int y, int offsetX, int offsetY, int layer) {
         if(areCoordsCorrect(x + offsetX, y + offsetY))
-            return values[getValuesIndex(x + offsetX, y + offsetY, index)];
+            return values[getValuesLayer(x + offsetX, y + offsetY, layer)];
         else
-            return boundary.getValue(x, y, offsetX, offsetY, index, this);
+            return boundary.getValue(x, y, offsetX, offsetY, layer, this);
     }
 
-    public float getNextValue(int x, int y, int offsetX, int offsetY, int index) {
+    public float getNextValue(int x, int y, int offsetX, int offsetY, int layer) {
         if(areCoordsCorrect(x + offsetX, y + offsetY))
-            return nextValues[getValuesIndex(x + offsetX, y + offsetY, index)];
+            return nextValues[getValuesLayer(x + offsetX, y + offsetY, layer)];
         else
-            return boundary.getValue(x, y, offsetX, offsetY, index, this);
+            return boundary.getValue(x, y, offsetX, offsetY, layer, this);
     }
 
     public void applyStatePartial(int x, int y)
     {
         for(int element = 0; element < elementsPerCell; element++) {
-            int index = getValuesIndex(x, y, element);
-            values[index] = nextValues[index];
+            int layer = getValuesLayer(x, y, element);
+            values[layer] = nextValues[layer];
         }
     }
 
@@ -99,8 +99,8 @@ public abstract class Board implements ISavable
 
     public void setCellValues(int x, int y, float[] values) {
         for(int element = 0; element < elementsPerCell; element++) {
-            int index = getValuesIndex(x, y, element);
-            nextValues[index] = values[element];
+            int layer = getValuesLayer(x, y, element);
+            nextValues[layer] = values[element];
         }
     }
 
@@ -108,7 +108,7 @@ public abstract class Board implements ISavable
     {
         StringBuilder sb = new StringBuilder();
         for(int element = 0; element < elementsPerCell; element++) {
-            sb.append(values[getValuesIndex(x, y, element)]);
+            sb.append(values[getValuesLayer(x, y, element)]);
             sb.append(' ');
         }
         return sb.toString();
@@ -120,9 +120,9 @@ public abstract class Board implements ISavable
             final Coordinates c1,
             final Coordinates c2);
 
-    protected int getValuesIndex(int x, int y, int index)
+    protected int getValuesLayer(int x, int y, int layer)
     {
-        return (y * boardSize + x) * elementsPerCell + index;
+        return (y * boardSize + x) * elementsPerCell + layer;
     }
 
     public void doBrush(CellFunctor brush, Coordinates c, int n)

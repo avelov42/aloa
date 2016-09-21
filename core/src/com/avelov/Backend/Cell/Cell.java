@@ -57,9 +57,9 @@ public class Cell
         board.applyStatePartial(x, y);
     }
 
-    public void setNextState(float[] values)
+    public void setNextState(float value, int layer)
     {
-        board.setCellValues(x, y, values);
+        board.setNextValue(x, y, layer, value);
     }
 
     @Override

@@ -30,8 +30,8 @@ public class SquareBoard extends Board {
             if (0 <= c.getKey().x && c.getKey().x < size &&
                     0 <= c.getKey().y && c.getKey().y < size) {
                 for(int i = 0 ; i < elementsPerCell; i++) {
-                    values[getValuesIndex(c.getKey().x, c.getKey().y, i)] = c.getValue().getValue(i);
-                    nextValues[getValuesIndex(c.getKey().x, c.getKey().y, i)] = c.getValue().getValue(i);
+                    values[getValuesLayer(c.getKey().x, c.getKey().y, i)] = c.getValue().getValue(i);
+                    nextValues[getValuesLayer(c.getKey().x, c.getKey().y, i)] = c.getValue().getValue(i);
                 }
             }
         }

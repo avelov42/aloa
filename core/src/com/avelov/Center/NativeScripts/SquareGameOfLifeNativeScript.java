@@ -13,8 +13,8 @@ public class SquareGameOfLifeNativeScript extends Script {
     public SquareGameOfLifeNativeScript()
     {}
 
-    static private float[] aliveCell = new float[] {1};
-    static private float[] deadCell = new float[] {0};
+    static private float aliveCell = 1;
+    static private float deadCell = 0;
 
     @Override
     public void run(Board board) {
@@ -32,16 +32,16 @@ public class SquareGameOfLifeNativeScript extends Script {
             if(currCell.getValue(0) == 0)
             {
                 if(aliveCells == 3)
-                    currCell.setNextState(aliveCell);
+                    currCell.setNextState(aliveCell, 0);
                 else
-                    currCell.setNextState(deadCell);
+                    currCell.setNextState(deadCell, 0);
             }
             else
             {
                 if (2 <= aliveCells && aliveCells <= 3)
-                    currCell.setNextState(aliveCell);
+                    currCell.setNextState(aliveCell, 0);
                 else
-                    currCell.setNextState(deadCell);
+                    currCell.setNextState(deadCell, 0);
             }
         }
         board.nextIteration();

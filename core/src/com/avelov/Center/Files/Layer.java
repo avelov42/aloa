@@ -9,9 +9,11 @@ import java.util.List;
  * Created by mateusz on 18.09.16.
  */
 public class Layer {
-    private String name;
-    private float min;
-    private float max;
+    static private int layerId = 0;
+    private final String name;
+    private final float min;
+    private final float max;
+    private final int layerNumber = layerId++;
     private BrushState defState;
     private float def;
     private List<AutomatonInfo.TinterDetails> tinters;
@@ -24,8 +26,8 @@ public class Layer {
         this.tinters = tinters;
         this.brushStates = new ArrayList<>();
         this.def = def;
-        defState = new BrushState(def, "Default");
-        this.brushStates.add(new BrushState(def, "Default"));
+        defState = new BrushState(def, "Default", layerNumber);
+        this.brushStates.add(new BrushState(def, "Default", layerNumber));
     }
 
     public List<AutomatonInfo.TinterDetails> getTinters() {
@@ -56,9 +58,14 @@ public class Layer {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getLayerNumber()
+    {
+        return layerNumber;
     }
+
+    //public void setName(String name) {
+    //    this.name = name;
+    //}
 
     public List<BrushState> getBrushStates() {
         return brushStates;

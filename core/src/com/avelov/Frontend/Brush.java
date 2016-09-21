@@ -118,8 +118,8 @@ public class Brush implements CellFunctor
 
         if(isVisible && isDrawing)
             handler.doBrush(this, position, size);
-        if(isVisible)
-            renderer.renderBrush(states.get(currentState).getCell(), handler.getNeighbours(position, size), true);
+        //if(isVisible)
+        //    renderer.renderBrush(states.get(currentState).getValue(), handler.getNeighbours(position, size), true);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class Brush implements CellFunctor
         //System.out.println((float) Math.pow((1-density), 1/(float)estimatedFramesInMoment));
         if(Math.abs(density - 1) <= 0.01 || rand.nextFloat() <= instantDensity)
         {
-            c.setNextState(states.get(currentState).getCell().getValue());
+            c.setNextState(states.get(currentState).getValue(), states.get(currentState).getLayer());
             c.applyState();
         }
     }
