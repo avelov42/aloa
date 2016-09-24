@@ -91,7 +91,8 @@ public class MenuScreen implements Screen
         if(Gdx.input.isKeyPressed(Input.Keys.X))
         {
             AutomatonInfo toRun = FileManager.getPredefinedAutomata().get(0);
-            Aloa.instance.setScreen(new GameplayScreen(new BoardHandler(toRun, toRun.getTopologies().get(0), new BoundaryWrap())));
+            toRun.setBoundaryPolicy(new BoundaryWrap());
+            Aloa.instance.setScreen(new GameplayScreen(new BoardHandler(toRun, toRun.getTopologies().get(0))));
         }
 
         //Action.act(float) returns true when action is done

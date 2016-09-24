@@ -182,8 +182,8 @@ public class AutomatonConfigurationTable extends DynamicTable
                     return;
                 }
                 selected.setBoardSize(boardSize);
-                selected.setCellSize(2); //@todo temporary hax, remove after main issue is fixed
-                Aloa.instance.setScreen(new GameplayScreen(new BoardHandler(selected, topologyChoice.getSelected(), boundaryPolicy)));
+                selected.setBoundaryPolicy(boundaryPolicy);
+                Aloa.instance.setScreen(new GameplayScreen(new BoardHandler(selected, topologyChoice.getSelected())));
             }
         });
 

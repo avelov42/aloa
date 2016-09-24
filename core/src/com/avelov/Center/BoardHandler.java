@@ -26,11 +26,7 @@ import com.avelov.Center.TopologyPackage.ITopology;
  */
 public class BoardHandler implements ISavable {
     private final List<Layer> layers;
-    //private ArrayList<BrushState> brushStates;
-    private ArrayList<Tinter> colorings;
     private final Board handled;
-    //private final float maxValue;
-    //private final float minValue;
     private final Script script;
     //private final String saveString;
     private ITopology topology;
@@ -41,21 +37,12 @@ public class BoardHandler implements ISavable {
         return topology;
     }
 
-    public BoardHandler(AutomatonInfo ab, TopologyScript topology, BoundaryPolicy bp) {
+    public BoardHandler(AutomatonInfo ab, TopologyScript topology) {
         handled = topology.getTopology().getCenterTopology().CreateAutomaton(
-                ab.getBoardSize(), ab.getCellSize(), bp, ab.getValues());
+                ab.getBoardSize(), ab.getLayers().size(), ab.getBoundaryPolicy(), ab.getValues());
         this.script = topology.getScript();
         this.topology = topology.getTopology();
-        //this.minValue = ab.getMinValue();
-        //this.maxValue = ab.getMaxValue();
-        //this.brushStates = ab.getBrushStates();
-        this.colorings = null;//ab.getTinters(); TODO
-        //this.saveString = ab.getSaveString();
         this.layers = ab.getLayers();
-    }
-
-    public ArrayList<Tinter> getColoring() {
-        return colorings;
     }
 
     public void makeStep() {
@@ -131,6 +118,7 @@ public class BoardHandler implements ISavable {
 //    }
 
 //    public float getMaxValue() {
+
 //        return maxValue;
 //    }
 //

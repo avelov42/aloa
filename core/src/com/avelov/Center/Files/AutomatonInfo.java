@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.avelov.Center.BrushState;
-import com.avelov.Center.Scripts.Script;
 import com.avelov.Center.TopologyPackage.ITopology;
 
 import com.avelov.Backend.Board.Coordinates;
@@ -27,11 +26,8 @@ import com.avelov.Backend.Cell.CellValue;
 public final class AutomatonInfo implements ISavable {
     private String                      automatonFilePath;
     private String                      automatonName;
-    //private BoundaryPolicy              boundaryPolicy;
+    private BoundaryPolicy              boundaryPolicy;
     private int                         boardSize           = -1;
-    //private ArrayList<BrushState>       brushStates         = new ArrayList<>();
-    private int                         cellSize            = -1;
-    //private ArrayList<TinterDetails>    colorings           = new ArrayList<>();
     private String                      description         = null;
     private String                      imagePath           = null;
     private boolean                     isImagePredefined   = false;
@@ -60,10 +56,6 @@ public final class AutomatonInfo implements ISavable {
 //               boundaryPolicy != null;
     }
 
-//    public void setAreRulesPredefined(boolean areRulesPredefined) {
-//        this.areRulesPredefined = areRulesPredefined;
-//    }
-
     public int getBoardSize() {
         return boardSize;
     }
@@ -71,33 +63,12 @@ public final class AutomatonInfo implements ISavable {
         this.boardSize = boardSize;
     }
 
-//    public BoundaryPolicy getBoundaryPolicy() {
-//        return boundaryPolicy;
-//    }
-//    public void setBoundaryPolicy(BoundaryPolicy boundaryPolicy) {
-//        this.boundaryPolicy = boundaryPolicy;
-//    }
-//
-//    public ArrayList<BrushState> getBrushStates() {
-//        return brushStates;
-//    }
-//    public void addBrushState(BrushState b) {
-//        brushStates.add(b);
-//    }
-//
-    public int getCellSize() {
-        return cellSize;
+    public BoundaryPolicy getBoundaryPolicy() {
+        return boundaryPolicy;
     }
-    public void setCellSize(int cellSize) {
-        this.cellSize = cellSize;
+    public void setBoundaryPolicy(BoundaryPolicy boundaryPolicy) {
+        this.boundaryPolicy = boundaryPolicy;
     }
-//
-//    public void addColoring(Tinter coloring, String path, boolean isPredefined) {
-//        this.colorings.add(new TinterDetails(coloring, path, isPredefined));
-//    }
-//    public ArrayList<TinterDetails> getColoring() {
-//        return colorings;
-//    }
 
     public String getDescription() {
         return description;
@@ -120,31 +91,6 @@ public final class AutomatonInfo implements ISavable {
         this.isImagePredefined = isImagePredefined;
     }
 
-//    public int getMaxValue() {
-//        return maxValue;
-//    }
-//    public void setMaxValue(int maxValue) {
-//        this.maxValue = maxValue;
-//    }
-//
-//    public int getMinValue() {
-//        return minValue;
-//    }
-//    public void setMinValue(int minValue) {
-//        this.minValue = minValue;
-//    }
-//
-//    public void setRulesPath(String rulesPath) {
-//        this.rulesPath = rulesPath;
-//    }
-//
-//    public Script getScript() {
-//        return script;
-//    }
-//    public void setScript(Script script) {
-//        this.script = script;
-//    }
-
     public List<TopologyScript> getTopologies()
     {
         return topologyScripts;
@@ -161,7 +107,7 @@ public final class AutomatonInfo implements ISavable {
         CellValue c = values.get(coords);
         if(c == null)
         {
-            float[] v = new float[cellSize];
+            float[] v = new float[layers.size()];
             v[index] = value;
             values.put(new Coordinates(x, y), new CellValue(v));
         }
@@ -231,13 +177,6 @@ public final class AutomatonInfo implements ISavable {
         }
         return null;
     }
-
-//    public ArrayList<Tinter> getTinters(Layer l) {
-//        ArrayList<Tinter> ret = new ArrayList<>();
-//        for(TinterDetails td : colorings)
-//            ret.add(td.tinter);
-//        return ret;
-//    }
 
     //@todo jak ryba dostanie raka to pokazać lekarzowi.
     public static class TinterDetails {
