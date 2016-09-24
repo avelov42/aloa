@@ -31,7 +31,7 @@ public class MenuScreen implements Screen
     public static final float TABLE_POSITION_X = 40, TABLE_POSITION_Y = 15;
     public static final float TABLE_SIZE_X = 900, TABLE_SIZE_Y = 800;
     public static final float TABLE_CHANGE_DURATION = 0.5f; //seconds
-    public static final Interpolation TABLE_CHANGE_LOOK = Interpolation.swing;
+    public static final Interpolation TABLE_CHANGE_LOOK = Interpolation.exp5;
     private Stage stage;
     private Stack<DynamicTable> tableStack;
 

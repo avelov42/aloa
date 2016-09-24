@@ -21,11 +21,34 @@ import java.util.List;
  */
 public class AutomatonConfigurationTable extends DynamicTable
 {
+    private enum BoundaryMode
+    {
+        ConstantValue("Constant value"),
+        Same("Same"),
+        Mirror("Mirror"),
+        Wrap("Wrap");
+
+        private final String name;
+        BoundaryMode(final String name)
+        {
+            this.name = name;
+        }
+        @Override
+        public String toString()
+        {
+            return name;
+        }
+        public static BoundaryMode[] getAll()
+        {
+            return new BoundaryMode[]{ConstantValue, Same, Mirror, Wrap};
+        }
+    }
+
     private List<Layer> layers;
     private int currentLayer = 0;
     private Label layerLabel;
 
-    final SelectBox<String> boundaryChoice;
+    final SelectBox<BoundaryMode> boundaryChoice;
     //layer dependents
 
     final SelectBox<AutomatonInfo.TinterDetails> coloringChoice;
@@ -36,34 +59,25 @@ public class AutomatonConfigurationTable extends DynamicTable
     private void incrementCurrentLayer()
     {
         currentLayer = (currentLayer+1) % layers.size();
-        updateLayerDependents();
+        update();
     }
     private void decrementCurrentLayer()
     {
         currentLayer = currentLayer-1 < 0 ? layers.size()-1 : currentLayer-1;
-        updateLayerDependents();
+        update();
     }
 
-    private void updateLayerDependents()
+    private void update()
     {
         layerLabel.setText(layers.get(currentLayer).getName());
-//        coloringChoice.setItems(new AutomatonInfo.TinterDetails(null, "/jakisfejkowy/path/mateusznapraw.coloring", false));
         coloringChoice.setItems(layers.get(currentLayer).getTinters().toArray(new AutomatonInfo.TinterDetails[layers.get(currentLayer).getTinters().size()]));
         constantValueChoice.setItems(layers.get(currentLayer).getBrushStates().toArray(new BrushState[layers.get(currentLayer).getBrushStates().size()]));
         constantValueChoice.setSelected(layers.get(currentLayer).getDefState());
-//        constantValueChoice.setItems(new BrushState(new float[3], "ASD"), new BrushState(new float[3], "RPiS"));
-        constantValueChoice.setVisible(boundaryChoice.getSelected().equals("Constant value"));
-        constantBoundaryValueLabel.setVisible(boundaryChoice.getSelected().equals("Constant value"));
+        constantValueChoice.setVisible(boundaryChoice.getSelected() == BoundaryMode.ConstantValue);
+        constantBoundaryValueLabel.setVisible(boundaryChoice.getSelected() == BoundaryMode.ConstantValue);
 
     }
 
-
-    @Override
-    public void act(float delta)
-    {
-        super.act(delta);
-        updateLayerDependents(); //@todo please solve it in a better way
-    }
 
     public AutomatonConfigurationTable(AutomatonInfo selected)
     {
@@ -74,7 +88,15 @@ public class AutomatonConfigurationTable extends DynamicTable
 
         Label boundaryLabel = new Label("Boundary behaviour:", Aloa.assets.skin);
         boundaryChoice = new SelectBox<>(Aloa.assets.skin);
-        boundaryChoice.setItems("Constant value", "Mirror", "Same", "Wrap");
+        boundaryChoice.setItems(BoundaryMode.getAll());
+        boundaryChoice.addListener(new ChangeListener()
+        {
+            @Override
+            public void changed(ChangeEvent event, Actor actor)
+            {
+                update();
+            }
+        });
 
 
         layers = selected.getLayers();
@@ -108,7 +130,7 @@ public class AutomatonConfigurationTable extends DynamicTable
         coloringChoice = new SelectBox<>(Aloa.assets.skin);
         constantValueChoice = new SelectBox<>(Aloa.assets.skin);
 
-        updateLayerDependents();
+        update();
 
         Label sizeLabel = new Label("Size:", Aloa.assets.skin);
         Label configLabel = new Label("Config string:", Aloa.assets.skin);
