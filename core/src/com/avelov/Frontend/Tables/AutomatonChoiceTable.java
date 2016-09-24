@@ -70,7 +70,7 @@ public class AutomatonChoiceTable extends DynamicTable
             public void changed(ChangeEvent event, Actor actor)
             {
                 MenuScreen.getInstance().pushTable(new InfoTable(graphicalAutomataList.getSelected().getDescription()));
-
+                //@todo Consider modal window here.
             }
         });
         ImageButton nextButton = Aloa.assets.makeButton("right-arrow");
@@ -86,7 +86,6 @@ public class AutomatonChoiceTable extends DynamicTable
                         {
                             FileManager.loadPredefinedAutomaton(graphicalAutomataList.getSelected());
                             MenuScreen.getInstance().pushTable(new AutomatonConfigurationTable(graphicalAutomataList.getSelected()));
-                            //@todo Consider modal window here.
                         }
                         catch(AutomatonLoaderException e)
                         {

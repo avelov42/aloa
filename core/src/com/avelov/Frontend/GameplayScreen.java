@@ -52,7 +52,7 @@ public class GameplayScreen implements Screen
     {
         //@todo Move this cell drawer somewhere else
         CellDrawer drawer = handler.getTopology().getFrontendTopology().getCellDrawer();
-        drawer.setTinter(handler.getColoring().get(0));
+        //drawer.setTinter(handler.getColoring().get(0));
 
         this.shapeRenderer = Aloa.assets.shape;
         this.stage = new Stage();

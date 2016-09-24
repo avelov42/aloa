@@ -28,8 +28,8 @@ public class MenuScreen implements Screen
     private static MenuScreen instance;
     public static final float BUTTON_SIZE_X = 240;
     public static final float BUTTON_SIZE_Y = 160;
-    public static final float TABLE_POSITION_X = 40, TABLE_POSITION_Y = 15;
-    public static final float TABLE_SIZE_X = 900, TABLE_SIZE_Y = 800;
+    public static final float TABLE_POSITION_X = 40, TABLE_POSITION_Y = 25;
+    public static final float TABLE_SIZE_X = 900, TABLE_SIZE_Y = 950;
     public static final float TABLE_CHANGE_DURATION = 0.5f; //seconds
     public static final Interpolation TABLE_CHANGE_LOOK = Interpolation.exp5;
     private Stage stage;
@@ -43,7 +43,7 @@ public class MenuScreen implements Screen
         tableStack = new Stack<>();
         stage = new Stage();
         tableStack.push(new MenuTable());
-        tableStack.peek().setSize(ux(TABLE_SIZE_X), uy(TABLE_SIZE_Y));
+        tableStack.peek().setSize(ux(TABLE_SIZE_X), uy(TABLE_SIZE_Y-150));
         tableStack.peek().setPosition(ux(TABLE_POSITION_X), uy(TABLE_POSITION_Y));
         stage.addActor(tableStack.peek());
     }
@@ -54,6 +54,7 @@ public class MenuScreen implements Screen
         {
             nextTable = table;
             previousTable = tableStack.peek();
+
             nextTable.setSize(ux(TABLE_SIZE_X), uy(TABLE_SIZE_Y));
             nextTable.setPosition(ux(1000 + TABLE_POSITION_X) , uy(TABLE_POSITION_Y));
             tableStack.push(nextTable);

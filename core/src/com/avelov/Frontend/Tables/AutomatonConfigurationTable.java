@@ -1,9 +1,17 @@
 package com.avelov.Frontend.Tables;
 
 import com.avelov.Aloa;
+import com.avelov.Backend.Boundary.BoundaryConstant;
+import com.avelov.Backend.Boundary.BoundaryMirror;
+import com.avelov.Backend.Boundary.BoundaryPolicy;
+import com.avelov.Backend.Boundary.BoundarySame;
+import com.avelov.Backend.Boundary.BoundaryWrap;
+import com.avelov.Center.BoardHandler;
 import com.avelov.Center.BrushState;
 import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Center.Files.Layer;
+import com.avelov.Center.Files.TopologyScript;
+import com.avelov.Frontend.GameplayScreen;
 import com.avelov.Frontend.Screens.MenuScreen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -13,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Select;
 
 import java.util.List;
 
@@ -52,7 +61,8 @@ public class AutomatonConfigurationTable extends DynamicTable
     //layer dependents
 
     final SelectBox<AutomatonInfo.TinterDetails> coloringChoice;
-    final SelectBox<BrushState> constantValueChoice;
+    final SelectBox<BrushState> constantValueLayerChoice;
+    float[] constantValues;
     Label constantBoundaryValueLabel;
 
 
@@ -71,22 +81,25 @@ public class AutomatonConfigurationTable extends DynamicTable
     {
         layerLabel.setText(layers.get(currentLayer).getName());
         coloringChoice.setItems(layers.get(currentLayer).getTinters().toArray(new AutomatonInfo.TinterDetails[layers.get(currentLayer).getTinters().size()]));
-        constantValueChoice.setItems(layers.get(currentLayer).getBrushStates().toArray(new BrushState[layers.get(currentLayer).getBrushStates().size()]));
-        constantValueChoice.setSelected(layers.get(currentLayer).getDefState());
-        constantValueChoice.setVisible(boundaryChoice.getSelected() == BoundaryMode.ConstantValue);
+        constantValueLayerChoice.setItems(layers.get(currentLayer).getBrushStates().toArray(new BrushState[layers.get(currentLayer).getBrushStates().size()]));
+        constantValueLayerChoice.setSelected(layers.get(currentLayer).getDefState());
+        constantValueLayerChoice.setVisible(boundaryChoice.getSelected() == BoundaryMode.ConstantValue);
         constantBoundaryValueLabel.setVisible(boundaryChoice.getSelected() == BoundaryMode.ConstantValue);
-
+        constantValues[currentLayer] = constantValueLayerChoice.getSelected().getValue();
     }
 
 
-    public AutomatonConfigurationTable(AutomatonInfo selected)
+    public AutomatonConfigurationTable(final AutomatonInfo selected)
     {
         Table automatonConfig = new Table(), layerConfig = new Table();
         Label automatonName = new Label(selected.getName(), Aloa.assets.skin.get("title", Label.LabelStyle.class));
         automatonName.setAlignment(Align.center);
 
+        final Label topologyLabel = new Label("Automaton topology:", Aloa.assets.skin);
+        final SelectBox<TopologyScript> topologyChoice = new SelectBox<>(Aloa.assets.skin);
+        topologyChoice.setItems(selected.getTopologies().toArray(new TopologyScript[selected.getTopologies().size()]));
 
-        Label boundaryLabel = new Label("Boundary behaviour:", Aloa.assets.skin);
+        final Label boundaryLabel = new Label("Boundary behaviour:", Aloa.assets.skin);
         boundaryChoice = new SelectBox<>(Aloa.assets.skin);
         boundaryChoice.setItems(BoundaryMode.getAll());
         boundaryChoice.addListener(new ChangeListener()
@@ -100,6 +113,9 @@ public class AutomatonConfigurationTable extends DynamicTable
 
 
         layers = selected.getLayers();
+        constantValues = new float[layers.size()];
+        for(int i = 0; i < layers.size(); i++)
+            constantValues[i] = layers.get(i).getDefault();
 
 
         ImageButton previousLayerButton = Aloa.assets.makeButton("left-arrow");
@@ -128,7 +144,7 @@ public class AutomatonConfigurationTable extends DynamicTable
         constantBoundaryValueLabel = new Label("Constant boundary value: ", Aloa.assets.skin);
 
         coloringChoice = new SelectBox<>(Aloa.assets.skin);
-        constantValueChoice = new SelectBox<>(Aloa.assets.skin);
+        constantValueLayerChoice = new SelectBox<>(Aloa.assets.skin);
 
         update();
 
@@ -136,6 +152,7 @@ public class AutomatonConfigurationTable extends DynamicTable
         Label configLabel = new Label("Config string:", Aloa.assets.skin);
         final TextField sizeInput = new TextField("", Aloa.assets.skin);
         final TextField configInput = new TextField("", Aloa.assets.skin);
+        sizeInput.setText("42");
 
         ImageButton nextButton = Aloa.assets.makeButton("right-arrow");
         ImageButton backButton = Aloa.assets.makeButton("left-arrow");
@@ -152,7 +169,21 @@ public class AutomatonConfigurationTable extends DynamicTable
             @Override
             public void changed(ChangeEvent event, Actor actor)
             {
-                //todo write logic of invoking gamescreen
+                BoundaryPolicy boundaryPolicy = makeBoundaryPolicy();
+                int boardSize = 42;
+                try
+                {
+                    boardSize = Integer.parseInt(sizeInput.getText());
+                    if(boardSize < 1) throw new NumberFormatException();
+                }
+                catch(NumberFormatException e)
+                {
+                    MenuScreen.getInstance().showDialog("Size must be a positive number");
+                    return;
+                }
+                selected.setBoardSize(boardSize);
+                selected.setCellSize(2); //@todo temporary hax, remove after main issue is fixed
+                Aloa.instance.setScreen(new GameplayScreen(new BoardHandler(selected, topologyChoice.getSelected(), boundaryPolicy)));
             }
         });
 
@@ -163,6 +194,9 @@ public class AutomatonConfigurationTable extends DynamicTable
 //        automatonConfig.debug();
         automatonConfig.top();
         automatonConfig.add(automatonName).colspan(automatonColumns).fill().spaceBottom(uy(32)).row();
+
+        automatonConfig.add(topologyLabel).colspan(automatonColumns).fill().expandX().spaceBottom(uy(10)).row();
+        automatonConfig.add(topologyChoice).colspan(automatonColumns).fill().expandX().spaceBottom(uy(16)).row();
 
         automatonConfig.add(boundaryLabel).colspan(automatonColumns).fill().expandX().spaceBottom(uy(10)).row();
         automatonConfig.add(boundaryChoice).colspan(automatonColumns).fill().expandX().spaceBottom(uy(16)).row();
@@ -183,7 +217,7 @@ public class AutomatonConfigurationTable extends DynamicTable
         layerConfig.add(coloringLabel).colspan(layerColumns).fill().expandX().padBottom(uy(10)).row();
         layerConfig.add(coloringChoice).colspan(layerColumns).fill().expandX().padBottom(uy(32)).row();
         layerConfig.add(constantBoundaryValueLabel).colspan(layerColumns).fill().expandX().padBottom(uy(10)).row();
-        layerConfig.add(constantValueChoice).colspan(layerColumns).fill().expandX().row();
+        layerConfig.add(constantValueLayerChoice).colspan(layerColumns).fill().expandX().row();
 
         add(automatonConfig).expand().fill().colspan(2).padBottom(uy(32)).row(); //todo wtf, why 100 is needed?
         add(layerConfig).expand().fill().colspan(2).padBottom(uy(20)).row();
@@ -202,6 +236,22 @@ public class AutomatonConfigurationTable extends DynamicTable
     private float uy(float millage)
     {
         return MenuScreen.uy(millage);
+    }
+
+    private BoundaryPolicy makeBoundaryPolicy()
+    {
+        switch(boundaryChoice.getSelected())
+        {
+            default:
+            case ConstantValue:
+                return new BoundaryConstant(constantValues);
+            case Same:
+                return new BoundarySame();
+            case Mirror:
+                return new BoundaryMirror();
+            case Wrap:
+                return new BoundaryWrap();
+        }
     }
 
     @Override

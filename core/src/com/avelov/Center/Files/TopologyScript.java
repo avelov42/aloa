@@ -58,6 +58,12 @@ public class TopologyScript {
         return name;
     }
 
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
+
     public void setName(String name) {
         this.name = name;
     }
