@@ -90,6 +90,7 @@ public class Brush implements CellFunctor
 
     public String getCurrentBrushStateName()
     {
+        System.out.printf("Returning name of (%d %d)\n", currentLayer, layerBrushStateIndex[currentLayer]);
         return layerList.get(currentLayer).getBrushStates().get(layerBrushStateIndex[currentLayer]).toString();
     }
 

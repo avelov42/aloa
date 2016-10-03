@@ -115,7 +115,7 @@ public class DebugInputProcessor implements InputProcessor
         {
             brush.setVisible(!brush.isVisible());
         }
-        brushWindow.update(false);
+        //brushWindow.update(false);
         return true;
     }
 
@@ -162,7 +162,7 @@ public class DebugInputProcessor implements InputProcessor
             brush.setSize(brush.getSize() - amount);
         else
             brush.setDensity(brush.getDensity() - amount / 100f);
-        brushWindow.update(false);
+        //brushWindow.update(false);
         return true;
     }
 }

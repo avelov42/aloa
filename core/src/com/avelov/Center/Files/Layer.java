@@ -58,6 +58,12 @@ public class Layer {
         return name;
     }
 
+    @Override
+    public String toString()
+    {
+        return getName();
+    }
+
     public int getLayerNumber()
     {
         return layerNumber;

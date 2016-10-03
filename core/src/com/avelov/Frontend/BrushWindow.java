@@ -16,50 +16,23 @@ public class BrushWindow extends Window
     private Brush brush;
 
     Label densityTitle;
-    Label densityValue;
+    Label densityName;
     Slider densitySlider;
 
     Label sizeTitle;
-    Label sizeValue;
+    Label sizeName;
     Slider sizeSlider;
 
     Label stateTitle;
-    Label stateValue;
+    Label stateName;
     Slider stateSlider;
 
     Label layerTitle;
-    Label layerValue;
+    Label layerName;
     Slider layerSlider;
 
-    public void update(boolean forceSliderValues)
-    {
-        if(forceSliderValues)
-        {
-            brush.setDensity(densitySlider.getValue());
-            brush.setSize((int) sizeSlider.getValue());
-            brush.setLayerByIndex((int) stateSlider.getValue());
-        }
 
-
-        densityValue.setText(Float.toString(Math.round(brush.getDensity() * 100) / (float) 100));
-        densitySlider.setValue(brush.getDensity());
-
-        sizeValue.setText(Integer.toString(brush.getSize()));
-        sizeSlider.setValue(brush.getSize());
-        sizeSlider.setRange(sizeSlider.getMinValue(), brush.getMaxSize());
-
-        stateValue.setText(brush.getCurrentBrushStateName());
-        stateSlider.setValue(brush.getCurrentBrushStateValue());
-
-    }
-
-    private void setMaxWidth()
-    {
-
-
-    }
-
-    public BrushWindow(Brush brush)
+    public BrushWindow(final Brush brush)
     {
         super("Awesome brush!", Aloa.assets.skin);
         getTitleLabel().setAlignment(Align.center);
@@ -68,64 +41,90 @@ public class BrushWindow extends Window
 
         //value labels will be updated in update()
         densityTitle = new Label("Density", Aloa.assets.skin);
-        densityValue = new Label("", Aloa.assets.skin); //@todo .2413?
+        densityName = new Label(Float.toString(Math.round(brush.getDensity() * 10000) / 100f) + " %", Aloa.assets.skin);
         densitySlider = new Slider(0, 1, 0.01f, false, Aloa.assets.skin);
         densitySlider.setValue(brush.getDensity()); //start value
 
         sizeTitle = new Label("Size", Aloa.assets.skin);
-        sizeValue = new Label("", Aloa.assets.skin);
+        sizeName = new Label(Integer.toString(brush.getSize()), Aloa.assets.skin);
         sizeSlider = new Slider(0, brush.getMaxSize(), 1, false, Aloa.assets.skin);
         sizeSlider.setValue(brush.getSize());
 
+
         stateTitle = new Label("State", Aloa.assets.skin);
-        stateValue = new Label("", Aloa.assets.skin);
+        stateName = new Label(brush.getCurrentBrushStateName(), Aloa.assets.skin);
         stateSlider = new Slider(0, brush.getLayerBrushStateCount(0) - 1, 1, false, Aloa.assets.skin);
         stateSlider.setValue(brush.getCurrentBrushStateIndex());
 
         layerTitle = new Label("Layer", Aloa.assets.skin);
-        layerValue = new Label("", Aloa.assets.skin);
+        layerName = new Label(brush.getCurrentLayerName(), Aloa.assets.skin);
         layerSlider = new Slider(0, brush.getLayerCount() - 1, 1, false, Aloa.assets.skin);
         layerSlider.setValue(brush.getCurrentLayerIndex());
 
 
         setupFrontend();
-        update(true);
 
-        addListener(new ChangeListener()
+        layerSlider.addListener(new ChangeListener()
         {
             @Override
             public void changed(ChangeEvent event, Actor actor)
             {
-                update(true);
+                brush.setLayerByIndex((int) layerSlider.getValue());
+                layerName.setText(brush.getCurrentLayerName());
+
+                stateSlider.setRange(0, brush.getLayerBrushStateCount(brush.getCurrentLayerIndex())-1);
+                stateSlider.setValue(brush.getCurrentBrushStateIndex());
+                stateName.setText(brush.getCurrentBrushStateName());
             }
         });
+
+        stateSlider.addListener(new ChangeListener()
+        {
+            @Override
+            public void changed(ChangeEvent event, Actor actor)
+            {
+                brush.setBrushStateByIndex((int) stateSlider.getValue());
+                stateName.setText(brush.getCurrentBrushStateName());
+            }
+        });
+
+        sizeSlider.addListener(new ChangeListener()
+        {
+            @Override
+            public void changed(ChangeEvent event, Actor actor)
+            {
+                brush.setSize((int) sizeSlider.getValue());
+                sizeName.setText(Integer.toString(brush.getSize()));
+            }
+        });
+
+        densitySlider.addListener(new ChangeListener()
+        {
+            @Override
+            public void changed(ChangeEvent event, Actor actor)
+            {
+                brush.setDensity(sizeSlider.getValue());
+                densityName.setText(Float.toString(Math.round(brush.getDensity() * 10000) / 100f) + " %");
+            }
+        });
+
 
         addListener(new ClickListener()
         {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor)
             {
-                startModifying();
+                brush.startShowcase();
             }
 
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor)
             {
-                stopModifying();
+                brush.stopShowcase();
             }
         });
         //debug();
         setPosition(Gdx.graphics.getWidth() * 0.02f, Gdx.graphics.getHeight() * 0.98f - getHeight());
-    }
-
-    private void startModifying()
-    {
-        brush.startShowcase();
-    }
-
-    private void stopModifying()
-    {
-        brush.stopShowcase();
     }
 
     public void startDrawing() { brush.startDrawing();}
@@ -139,29 +138,42 @@ public class BrushWindow extends Window
 
     private void setupFrontend()
     {
-        add(sizeTitle);
-        add(sizeSlider).padLeft(10);
-        add(sizeValue).expandX().center().padLeft(20).padRight(10);
+        //add ux & uy
+
+        add(layerTitle);
+        add(layerSlider).padLeft(10);
+        add(layerName).expandX().center().padLeft(20).padRight(10);
 
         row().padTop(10);
 
         add(stateTitle);
         add(stateSlider).padLeft(10);
-        add(stateValue).expandX().center().padLeft(20).padRight(10);
+        add(stateName).expandX().center().padLeft(20).padRight(10);
+
+        row().padTop(10);
+
+        add(sizeTitle);
+        add(sizeSlider).padLeft(10);
+        add(sizeName).expandX().center().padLeft(20).padRight(10);
 
         row().padTop(10);
 
         add(densityTitle);
         add(densitySlider).padLeft(10);
-        add(densityValue).expandX().center().padLeft(20).padRight(10);
+        add(densityName).expandX().center().padLeft(20).padRight(10);
 
         pack();
+
+        //find minimum size of the window
         for(int l = 0; l < brush.getLayerCount(); l++)
         {
-
+            brush.setLayerByIndex(l);
+            layerName.setText(brush.getCurrentLayerName());
+            if(getPrefWidth() > getWidth()) pack();
             for(int b = 0; b < brush.getLayerBrushStateCount(l); b++)
             {
-                stateValue.setText(brush.getCurrentBrushStateName());
+                brush.setBrushStateByIndex(b);
+                stateName.setText(brush.getCurrentBrushStateName());
                 if(getPrefWidth() > getWidth()) pack();
             }
         }
