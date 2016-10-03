@@ -1,0 +1,14 @@
+cellSize: 1
+boardSize: 200
+maxValue: 100
+minValue: 0
+topology: square
+boundary: wrap
+rules: predefined squareHeatRules.rules
+coloring: predefined defaultContinuousColoring.coloring, predefined thermovision.coloring
+addBrushState: 0.0 "Very Cold"
+addBrushState: 20.0 "Cold"
+addBrushState: 40.0 "Cool"
+addBrushState: 60.0 "Warm"
+addBrushState: 80.0 "Hot"
+addBrushState: 100.0 "So fu**ing HOT"
