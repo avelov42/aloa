@@ -1,6 +1,7 @@
 package com.avelov.Frontend;
 
 import com.avelov.Aloa;
+import com.avelov.OrientationManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -10,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import com.avelov.Center.BoardHandler;
-import com.avelov.Center.Files.AutomatonInfo;
 import com.avelov.Frontend.CellDrawers.CellDrawer;
 
 
@@ -25,9 +25,7 @@ import com.avelov.Frontend.CellDrawers.CellDrawer;
 
 public class GameplayScreen implements Screen
 {
-
     private BoardHandler handler;
-    private AutomatonInfo blueprint;
     private Stage stage;
 
     private ShapeRenderer shapeRenderer;
@@ -50,33 +48,24 @@ public class GameplayScreen implements Screen
 
     public GameplayScreen(BoardHandler handler)
     {
-        //@todo Move this cell drawer somewhere else
-        CellDrawer drawer = handler.getTopology().getFrontendTopology().getCellDrawer();
-        //drawer.setTinter(handler.getColoring().get(0));
-
         this.shapeRenderer = Aloa.assets.shape;
-        this.stage = new Stage();
-
         this.handler = handler;
+        setupFrontend();
+    }
 
-        this.boardView = new BoardRenderer(handler, drawer);
-        //this.brush = new Brush(handler, boardView, handler.getBrushStates());
+    private void setupFrontend()
+    {
+        this.stage = new Stage();
+        this.boardView = new BoardRenderer(handler,  handler.getTopology().getFrontendTopology().getCellDrawer());
+        this.brush = new Brush(handler, boardView, handler.getLayers());
         this.brushWindow = new BrushWindow(brush);
-
         this.speedWindow = new SpeedWindow(new SpeedMeter(SpeedMeter.START_SPEED_PERCENT, SpeedMeter.MAX_WAIT_TIME));
-
         this.boardController = new BoardController(boardView, brushWindow);
         this.debugInputProcessor = new DebugInputProcessor(this, handler, boardView, brushWindow);
         this.inputMultiplexer = new InputMultiplexer();
-
         this.toolsWindow = new ToolsWindow(handler, speedWindow, this, stage);
 
         pause();
-        setUpStage();
-    }
-
-    private void setUpStage()
-    {
         stage.addActor(brushWindow);
         stage.addActor(speedWindow);
         stage.addActor(toolsWindow);
@@ -96,8 +85,8 @@ public class GameplayScreen implements Screen
     @Override
     public void resize(int width, int height)
     {
-        boardView.resize(width, height);
-        stage.getViewport().update(width, height);
+        System.out.println("Call resize");
+        setupFrontend();
     }
 
     @Override
@@ -108,6 +97,7 @@ public class GameplayScreen implements Screen
         inputMultiplexer.addProcessor(boardController.getAndroidProcessor());
         setCameraMode(false);
         Gdx.input.setInputProcessor(inputMultiplexer);
+        System.out.println("Call show");
     }
 
     @Override

@@ -1,10 +1,11 @@
 package com.avelov.Frontend;
 
+import com.avelov.Center.Files.Layer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.avelov.Center.BoardHandler;
@@ -13,8 +14,7 @@ import com.avelov.Backend.Brush.CellFunctor;
 import com.avelov.Backend.Cell.Cell;
 
 /**
- * Implements brush functionality.
- * Model class.
+ * Represents a brush object, which is capable of
  */
 public class Brush implements CellFunctor
 {
@@ -28,38 +28,71 @@ public class Brush implements CellFunctor
     private BoardHandler handler;
     private BoardRenderer renderer;
 
-    private ArrayList<BrushState> states;
-    private int currentState;
+    private List<Layer> layerList;
+    private int[] layerBrushStateIndex; //i-th value describes which brush state of this layer is chosen
+    private int currentLayer = 0;
 
-    private int size;
-    private float density;
-    private boolean isDrawing;
-    private boolean isBeingModified;
-    private boolean isVisible;
+    private int size = 2;
+    private float density = 1f;
+    private boolean isDrawing = false;
+    private boolean showcaseMode = false;
+    private boolean isVisible = true;
 
-    public Brush(BoardHandler handler, BoardRenderer renderer, ArrayList<BrushState> states)
+    public Brush(BoardHandler handler, BoardRenderer renderer, List<Layer> layerList)
     {
         this.rand = new Random();
         this.handler = handler;
         this.renderer = renderer;
-        this.states = states;
-        this.currentState = 0;
-        this.size = 2;
-        this.density = 1f;
-        this.isDrawing = false;
-        this.isVisible = true;
+        this.layerList = layerList;
+        this.layerBrushStateIndex = new int[layerList.size()];
+
     }
 
-    /**
-     * Selects state to be applied when drawing.
-     */
-    public void nextState() { setStateID(currentState + 1);}
-    public void prevState() { setStateID(currentState - 1);}
-    public void setStateID(int state) { currentState = state % states.size();}
-    public int getCurrentStateID() { return currentState;}
-    public BrushState getCurrentState() { return states.get(currentState);}
-    public BrushState getState(int id) { return states.get(id);}
-    public int getStatesCount() { return states.size();}
+    public void setLayerByIndex(int layer)
+    {
+        currentLayer = layer;
+    }
+
+    public void setBrushStateByIndex(int brushStateIndex)
+    {
+        layerBrushStateIndex[currentLayer] = brushStateIndex;
+    }
+
+    public int getCurrentLayerIndex()
+    {
+        return currentLayer;
+    }
+
+    public int getCurrentBrushStateIndex()
+    {
+        return layerBrushStateIndex[currentLayer];
+    }
+
+    public float getCurrentBrushStateValue()
+    {
+        return layerList.get(currentLayer).getBrushStates().get(layerBrushStateIndex[currentLayer]).getValue();
+    }
+
+    public int getLayerCount()
+    {
+        return layerList.size();
+    }
+
+    public int getLayerBrushStateCount(int layer)
+    {
+       return layerList.get(layer).getBrushStates().size();
+    }
+
+    public String getCurrentLayerName()
+    {
+        return layerList.get(currentLayer).toString();
+    }
+
+    public String getCurrentBrushStateName()
+    {
+        return layerList.get(currentLayer).getBrushStates().get(layerBrushStateIndex[currentLayer]).toString();
+    }
+
 
     /**
      * Call to obatain boardSize of brush filling whole view.
@@ -79,8 +112,8 @@ public class Brush implements CellFunctor
     /**
      * Call these if user changes brush properties.
      */
-    public void startModifying() { isBeingModified = true;}
-    public void stopModifying() { isBeingModified = false;}
+    public void startShowcase() { showcaseMode = true;}
+    public void stopShowcase() { showcaseMode = false;}
 
     /**
      * Call these if user wants to hide/show brush ghost.
@@ -113,20 +146,15 @@ public class Brush implements CellFunctor
     {
         Vector3 position;
 
-        if(isBeingModified) position = renderer.screenToVirtual(new Vector3(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0));
+        if(showcaseMode) position = renderer.screenToVirtual(new Vector3(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0));
         else position = renderer.screenToVirtual(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
 
         if(isVisible && isDrawing)
             handler.doBrush(this, position, size);
         //if(isVisible)
-        //    renderer.renderBrush(states.get(currentState).getValue(), handler.getNeighbours(position, size), true);
+        //    renderer.renderBrush(states.get(layerBrushStateIndex).getValue(), handler.getNeighbours(position, size), true);
     }
 
-    @Override
-    public String toString()
-    {
-        return states.get(currentState).getDescription();
-    }
 
     /**
      * Implementation of the CellFunctor for backend.
@@ -147,7 +175,7 @@ public class Brush implements CellFunctor
         //System.out.println((float) Math.pow((1-density), 1/(float)estimatedFramesInMoment));
         if(Math.abs(density - 1) <= 0.01 || rand.nextFloat() <= instantDensity)
         {
-            c.setNextState(states.get(currentState).getValue(), states.get(currentState).getLayer());
+            c.setNextValue(currentLayer, getCurrentBrushStateValue());
             c.applyState();
         }
     }

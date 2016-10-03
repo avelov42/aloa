@@ -51,7 +51,7 @@ public class Watchdog implements Runnable
                 counter = 0;
 
             if(counter > allowableDrops)
-                Aloa.instance.setScreen(MenuScreen.getInstance());
+                Aloa.instance.setScreen(MenuScreen.getInstance(), OrientationManager.Orientation.PORTRAIT);
             else;
                 //System.out.println("Watchdog OK, counter: " + counter + " fps: " + Gdx.graphics.getFramesPerSecond());
 

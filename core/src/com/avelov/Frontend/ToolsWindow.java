@@ -131,7 +131,7 @@ public class ToolsWindow extends Window
             {
                 Aloa.orientationManager.setOrientation(OrientationManager.Orientation.PORTRAIT);
                 Gdx.graphics.setWindowedMode(540, 960);
-                Aloa.instance.setScreen(MenuScreen.getInstance());
+                Aloa.instance.setScreen(MenuScreen.getInstance(), OrientationManager.Orientation.PORTRAIT);
             }
         });
 

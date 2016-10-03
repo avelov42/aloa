@@ -13,6 +13,7 @@ import com.avelov.Center.Files.Layer;
 import com.avelov.Center.Files.TopologyScript;
 import com.avelov.Frontend.GameplayScreen;
 import com.avelov.Frontend.Screens.MenuScreen;
+import com.avelov.OrientationManager;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -183,7 +184,7 @@ public class AutomatonConfigurationTable extends DynamicTable
                 }
                 selected.setBoardSize(boardSize);
                 selected.setBoundaryPolicy(boundaryPolicy);
-                Aloa.instance.setScreen(new GameplayScreen(new BoardHandler(selected, topologyChoice.getSelected())));
+                Aloa.instance.setScreen(new GameplayScreen(new BoardHandler(selected, topologyChoice.getSelected())), OrientationManager.Orientation.LANDSCAPE);
             }
         });
 

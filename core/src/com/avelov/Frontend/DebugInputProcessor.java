@@ -1,6 +1,7 @@
 package com.avelov.Frontend;
 
 import com.avelov.Frontend.Screens.MenuScreen;
+import com.avelov.OrientationManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -85,7 +86,7 @@ public class DebugInputProcessor implements InputProcessor
 
         }
         if(keycode == Input.Keys.ESCAPE)
-            Aloa.instance.setScreen(MenuScreen.getInstance());
+            Aloa.instance.setScreen(MenuScreen.getInstance(), OrientationManager.Orientation.PORTRAIT);
         if(keycode == Input.Keys.P)
         {
             handler.makeStep();
@@ -98,7 +99,8 @@ public class DebugInputProcessor implements InputProcessor
 
         if(keycode == Input.Keys.C)
         {
-            brush.nextState();
+            //brush.nextState();
+            //@todo zaimplementowac moze ten debug :)
             System.out.println("Brush state is now: \"" + brush + "\"");
         }
 

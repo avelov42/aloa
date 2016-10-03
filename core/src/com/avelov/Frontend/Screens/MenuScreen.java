@@ -8,6 +8,7 @@ import com.avelov.Center.Files.FileManager;
 import com.avelov.Frontend.GameplayScreen;
 import com.avelov.Frontend.Tables.DynamicTable;
 import com.avelov.Frontend.Tables.MenuTable;
+import com.avelov.OrientationManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -92,7 +93,7 @@ public class MenuScreen implements Screen
         {
             AutomatonInfo toRun = FileManager.getPredefinedAutomata().get(0);
             toRun.setBoundaryPolicy(new BoundaryWrap());
-            Aloa.instance.setScreen(new GameplayScreen(new BoardHandler(toRun, toRun.getTopologies().get(0))));
+            Aloa.instance.setScreen(new GameplayScreen(new BoardHandler(toRun, toRun.getTopologies().get(0))), OrientationManager.Orientation.LANDSCAPE);
         }
 
         //Action.act(float) returns true when action is done

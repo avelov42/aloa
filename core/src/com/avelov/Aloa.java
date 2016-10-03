@@ -26,11 +26,17 @@ public class Aloa extends ApplicationAdapter
     static public OrientationManager orientationManager;
     private Screen currentScreen;
     private Screen nextScreen;
+    private OrientationManager.Orientation nextScreenOrientation;
     private ScreenFade fade;
 
     public Aloa(OrientationManager orientationManager)
     {
         Aloa.orientationManager = orientationManager;
+    }
+
+    public void setOrientation(OrientationManager.Orientation orientation)
+    {
+        orientationManager.setOrientation(orientation);
     }
 
     @Override
@@ -39,22 +45,24 @@ public class Aloa extends ApplicationAdapter
         instance = this;
         assets = new Assets();
         fade = new ScreenFade();
-        setScreen(MenuScreen.getInstance());
+        setScreen(MenuScreen.getInstance(), OrientationManager.Orientation.PORTRAIT);
     }
 
-    public void setScreen(Screen screen)
+    public void setScreen(Screen screen, OrientationManager.Orientation orientation)
     {
         if(fade.getState() != ScreenFade.State.Idle)
             return;
         if(currentScreen != null) //typical change
         {
             nextScreen = screen;
+            nextScreenOrientation = orientation;
             currentScreen.hide(); // lets tell the screen to unregister its input processor
             fade.start(ScreenFade.State.FadeOut, ScreenFade.FADE_OUT_DURATION); //setting fade-out
         }
         else //occurs only on start of application
         {
             currentScreen = screen;
+            orientationManager.setOrientation(OrientationManager.Orientation.PORTRAIT);
             fade.start(ScreenFade.State.FadeIn, ScreenFade.FADE_OUT_DURATION); //setting fade-in
         }
     }
@@ -82,6 +90,8 @@ public class Aloa extends ApplicationAdapter
             currentScreen = nextScreen;
             nextScreen = null;
             fade.stop();
+            orientationManager.setOrientation(nextScreenOrientation);
+            System.out.println("Call orientation");
             fade.start(ScreenFade.State.FadeIn, ScreenFade.FADE_IN_DURATION); //lets fade in new screen
         }
     }
